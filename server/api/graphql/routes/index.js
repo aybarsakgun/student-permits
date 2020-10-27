@@ -69,7 +69,7 @@ export function setGraphQLClientAPI(app, server, path) {
 	}
 
 	/** Create new ApolloServer */
-	const apolloServer = new ApolloServer({ typeDefs, resolvers, context, subscriptions, formatError,  });
+	const apolloServer = new ApolloServer({ typeDefs, resolvers, context, subscriptions, formatError });
 	/** Apply middleware to express app */
 	apolloServer.applyMiddleware({ app, path });
 	/** Install GraphQL subscription handlers */
