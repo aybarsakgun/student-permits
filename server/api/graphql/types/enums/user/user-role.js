@@ -1,6 +1,7 @@
 export const UserRoleEnum = `
 	enum UserRoleEnum {
-		ADMIN
+	  ADMIN
+		SCHOOL_ADMIN
 		TEACHER
 		STUDENT
 	}

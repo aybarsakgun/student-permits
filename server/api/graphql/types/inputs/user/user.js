@@ -1,14 +1,11 @@
 export const UserInput = `
 	input UserInput {
-		id: ID,
-		username: String!,
-		name: String!,
-		lastName: String!,
-		email: String!,
-		phone: String!,
-		role: UserRoleEnum!,
+		id: ID
+		name: String
+		lastName: String
+		email: String
+		phone: String
+		role: UserRoleEnum
+		school: ID
 	}
 `;
-
-// role: UserRoleEnum!,
-// 	classes: [ClassInput]

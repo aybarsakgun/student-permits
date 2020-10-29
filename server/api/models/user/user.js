@@ -1,26 +1,11 @@
-import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import mongoose, { Schema } from 'mongoose';
+import mongoose, {Schema} from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
-import { USER_ROLES } from '../../constants/user-roles';
+import {USER_ROLES} from '../../constants/user-roles';
 
 const secret = process.env.JWT_SECRET;
 
-/** User mongoose schema */
 const UserSchema = new Schema({
-	salt: {
-		type: String,
-		select: false
-	},
-	hash: {
-		type: String,
-		select: false
-	},
-	username: {
-		type: String,
-		lowercase: true,
-		required: [true, 'User username can\'t be blank']
-	},
 	name: {
 		type: String,
 		required: [true, 'User name can\'t be blank']
@@ -40,12 +25,6 @@ const UserSchema = new Schema({
 			'is invalid'
 		]
 	},
-	googleId: {
-		type: String,
-		unique: true,
-		index: true,
-		default: null,
-	},
 	phone: {
 		type: String,
 		required: [true, 'User phone can\'t be blank']
@@ -54,7 +33,13 @@ const UserSchema = new Schema({
 		type: String,
 		enum: USER_ROLES,
 		required: [true, 'User role can\'t be blank'],
-	}
+	},
+  school: {
+    type: Schema.Types.ObjectId,
+    required: [true, 'Class school can\'t be blank'],
+    ref: 'School',
+    index: true,
+  },
 },
 {
 	collection: 'Users',
@@ -67,28 +52,7 @@ const UserSchema = new Schema({
 	}
 });
 
-/** Add unique validator plugin to User schema. */
 UserSchema.plugin(uniqueValidator, { message: 'is already taken' });
-
-/**
- * Update user password.
- * @param {string} password user to set.
- * @returns (void) It not returns none.
- */
-UserSchema.methods.setPassword = function(password) {
-	this.salt = crypto.randomBytes(16).toString('hex');
-	this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
-}
-
-/**
- * Check that a password is valid to a user.
- * @param {string} password to validate.
- * @returns (boolean) true if password is valid, else returns false.
- */
-UserSchema.methods.validatePassword = function(password) {
-	const hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
-	return this.hash === hash;
-}
 
 /**
  * Generate JSON Web Token to a user.
@@ -102,13 +66,8 @@ UserSchema.methods.generateJWT = function() {
 		id: this.id,
 		exp: parseInt(exp.getTime() / 1000)
 	}, secret);
-}
+};
 
-/**
- * References:
- * http://thecodebarbarian.com/mongoose-virtual-populate
- * https://mongoosejs.com/docs/4.x/docs/guide.html
- */
 UserSchema.virtual('teacherClasses', {
 	ref: 'Class',
 	localField: '_id',

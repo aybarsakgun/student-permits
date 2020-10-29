@@ -1,9 +1,11 @@
 import { schoolDef, school } from './school/school.query';
 import { classDef, Class } from './class/class.query';
+import {userDef, user} from "./user/user.query";
 
 const defs = [
 	schoolDef,
-	classDef
+	classDef,
+  userDef
 ];
 
 export const QueryDef = defs.length > 0 ? `
@@ -14,5 +16,6 @@ export const QueryDef = defs.length > 0 ? `
 
 export const Query = defs.length > 0 ? {
 	school,
-	Class
+	Class,
+  user
 } : null;
