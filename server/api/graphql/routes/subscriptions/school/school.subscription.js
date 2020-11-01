@@ -5,7 +5,7 @@ export const schoolCreatedDef = `schoolCreated: School`;
 
 export const schoolCreated = {
 	resolve: (root, params, context, info) => {
-		console.info('[graphql/client/subscription] schoolCreated');
+		console.info('[graphql/subscription] schoolCreated');
 		return root ? root.schoolModel : null;
 	},
 	subscribe: () => pubsub.asyncIterator(SCHOOL_CREATED)

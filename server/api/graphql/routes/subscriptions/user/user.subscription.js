@@ -5,7 +5,7 @@ export const userCreatedDef = `userCreated: User`;
 
 export const userCreated = {
 	resolve: (root, params, context, info) => {
-		console.info('[graphql/client/subscription] userCreated');
+		console.info('[graphql/subscription] userCreated');
 		return root ? root.userModel : null;
 	},
 	subscribe: () => pubsub.asyncIterator(USER_CREATED)

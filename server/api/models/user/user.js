@@ -55,8 +55,7 @@ const UserSchema = new Schema({
 UserSchema.plugin(uniqueValidator, { message: 'is already taken' });
 
 /**
- * Generate JSON Web Token to a user.
- * @returns (string) user token.
+ * @returns (string)
  */
 UserSchema.methods.generateJWT = function() {
 	const today = new Date();

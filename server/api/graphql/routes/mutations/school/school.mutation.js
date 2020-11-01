@@ -1,4 +1,4 @@
-import {SchoolCreate, SchoolUpdate} from '../../../../functions/modules/school/school.dao';
+import {SchoolCreate, SchoolDelete, SchoolUpdate} from '../../../../functions/modules/school/school.dao';
 import pubsub from '../../../../singletons/pubsub';
 import {SCHOOL_CREATED, SCHOOL_DELETED, SCHOOL_UPDATED} from '../../../../constants/subscriptions';
 

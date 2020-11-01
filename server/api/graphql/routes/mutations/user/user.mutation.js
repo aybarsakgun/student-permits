@@ -1,6 +1,6 @@
 import pubsub from '../../../../singletons/pubsub';
-import {USER_CREATED, USER_UPDATED} from "../../../../constants/subscriptions";
-import {UserCreate, UserUpdate} from "../../../../functions/modules/user/user.dao";
+import {USER_CREATED, USER_DELETED, USER_UPDATED} from "../../../../constants/subscriptions";
+import {UserCreate, UserDelete, UserUpdate} from "../../../../functions/modules/user/user.dao";
 
 export const userCreateDef = `userCreate(user: UserInput!): User!`;
 

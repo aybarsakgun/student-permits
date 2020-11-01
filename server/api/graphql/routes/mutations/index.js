@@ -6,16 +6,24 @@ import {
   schoolUpdate,
   schoolUpdateDef
 } from './school/school.mutation';
-import {classCreate, classCreateDef, classUpdate, classUpdateDef} from './class/class.mutation';
+import {
+  classCreate,
+  classCreateDef,
+  classDelete,
+  classDeleteDef,
+  classUpdate,
+  classUpdateDef
+} from './class/class.mutation';
 import {userCreate, userCreateDef, userDelete, userDeleteDef, userUpdate, userUpdateDef} from "./user/user.mutation";
 
 
 const defs = [
-	schoolCreateDef,
+  schoolCreateDef,
   schoolUpdateDef,
   schoolDeleteDef,
-	classCreateDef,
-	classUpdateDef,
+  classCreateDef,
+  classUpdateDef,
+  classDeleteDef,
   userCreateDef,
   userUpdateDef,
   userDeleteDef
@@ -28,11 +36,12 @@ export const MutationDef = defs.length > 0 ? `
 ` : '';
 
 export const Mutation = defs.length > 0 ? {
-	schoolCreate,
+  schoolCreate,
   schoolUpdate,
   schoolDelete,
-	classCreate,
-	classUpdate,
+  classCreate,
+  classUpdate,
+  classDelete,
   userCreate,
   userUpdate,
   userDelete,

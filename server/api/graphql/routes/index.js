@@ -64,7 +64,7 @@ export function setGraphQLClientAPI(app, server, path) {
 	 * @returns {Error} new error.
 	 */
 	function formatError(err) {
-		console.error('ERROR: [graphql/client]:', err);
+		console.error('ERROR: [graphql]:', err);
 		return err.message || err;
 	}
 

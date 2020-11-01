@@ -118,7 +118,7 @@ async function getUserStudents(user) {
 
 async function checkAuthorization(findUser, contextUser) {
   if (!findUser) {
-    throw new Error(`User '${id}' not found.`);
+    throw new Error(`User not found.`);
   }
 
   if (contextUser.role === ROLE_SCHOOL_ADMIN && contextUser.school !== findUser.school) {
@@ -139,4 +139,31 @@ async function checkAuthorization(findUser, contextUser) {
   if (contextUser.role === ROLE_STUDENT && contextUser.id !== findUser.id) {
     throw new Error(`Unauthorized transaction.`);
   }
+}
+
+/**
+ * @param id{number}
+ * @param contextUser{User}
+ * @returns {User}
+ */
+export async function UserDelete(id, contextUser) {
+  if (contextUser.role !== ROLE_ADMIN) {
+    throw new Error(`Unauthorized transaction`);
+  }
+
+  const checkClasses = await Class.find({
+    $or: [{teachers: {$in: id}}, {students: {$in: id}}]
+  }).lean();
+
+  if (checkClasses.length) {
+    throw new Error('There are classes belonging to the user. You cannot delete the user.');
+  }
+
+  const userModel = await User.findByIdAndRemove(id).populate('school');
+
+  if (!userModel) {
+    throw new Error(`Can't delete user '${id}'.`);
+  }
+
+  return userModel;
 }
