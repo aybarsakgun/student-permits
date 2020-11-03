@@ -1,10 +1,8 @@
 import bluebird from 'bluebird';
 import mongoose from 'mongoose';
 
-/** Setup promises to mongoose */
 mongoose.Promise = bluebird;
 
-/** Connect to database */
 mongoose.connect(process.env.MONGODB_URI, {
 	useNewUrlParser: true,
 	useFindAndModify: false,

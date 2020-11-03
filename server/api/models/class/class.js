@@ -1,7 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
-/** Class mongoose schema. */
 const ClassSchema = new Schema({
 		name: {
 			type: String,
@@ -55,8 +54,6 @@ const ClassSchema = new Schema({
 // 	});
 // });
 
-/** Add unique validator plugin to Class schema. */
 ClassSchema.plugin(uniqueValidator, { message: 'is already taken' });
 
-/** Set Class schema to a model called Class */
 export default mongoose.model('Class', ClassSchema);

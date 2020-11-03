@@ -67,29 +67,28 @@ UserSchema.methods.generateJWT = function() {
 	}, secret);
 };
 
-UserSchema.virtual('teacherClasses', {
-	ref: 'Class',
-	localField: '_id',
-	foreignField: 'teachers'
-});
+// UserSchema.virtual('teacherClasses', {
+// 	ref: 'Class',
+// 	localField: '_id',
+// 	foreignField: 'teachers'
+// });
+//
+// UserSchema.virtual('studentClasses', {
+// 	ref: 'Class',
+// 	localField: '_id',
+// 	foreignField: 'students'
+// });
+//
+// UserSchema.virtual('students', {
+// 	ref: 'User',
+// 	localField: '_id',
+// 	foreignField: 'user'
+// });
+//
+// UserSchema.virtual('teachers', {
+// 	ref: 'User',
+// 	localField: '_id',
+// 	foreignField: 'user'
+// });
 
-UserSchema.virtual('studentClasses', {
-	ref: 'Class',
-	localField: '_id',
-	foreignField: 'students'
-});
-
-UserSchema.virtual('students', {
-	ref: 'User',
-	localField: '_id',
-	foreignField: 'user'
-});
-
-UserSchema.virtual('teachers', {
-	ref: 'User',
-	localField: '_id',
-	foreignField: 'user'
-});
-
-/** Set User schema to a model called User */
 export default mongoose.model('User', UserSchema);
