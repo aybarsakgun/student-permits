@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "student-permits"
+    }
+  },
+  "defaultProject": "student-permits",
+  "cli": {
+    "analytics": false
+  }
 }
