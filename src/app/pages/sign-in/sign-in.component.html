@@ -1,9 +1,9 @@
 <section class="container my-2 my-sm-5 py-2 py-sm-5">
   <article class="row">
     <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
-      <form [formGroup]="form" class="card bg-light" (submit)="SignIn()">
+      <form [formGroup]="form" class="card bg-light">
         <div class="card-header">
-          <h1 class="card-title text-center">Sign in</h1>
+          <h1 class="card-title text-center">Sign in {{tokenVerifying}}</h1>
         </div>
         <div class="card-body">
           <div class="form-group">

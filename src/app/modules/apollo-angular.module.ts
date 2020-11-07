@@ -25,26 +25,12 @@ export class ApolloAngularModule {
   private authStatus: AUTH_STATUS = AUTH_STATUS.LOADING;
 
   constructor(apollo: Apollo, httpLink: HttpLink, auth: AuthService) {
+    this._createApolloClient(apollo, httpLink, auth);
     auth.status$.subscribe((status: AUTH_STATUS) => {
       if (this.authStatus === status) {
         return;
       }
       this.authStatus = status;
-      const apolloInstance = apollo.use('client');
-      switch (status) {
-        case AUTH_STATUS.PUBLIC:
-          if (apolloInstance) {
-            apolloInstance.client.resetStore();
-          }
-          break;
-        case AUTH_STATUS.CLIENT:
-          if (apolloInstance) {
-            apolloInstance.client.resetStore();
-          } else {
-            this._createApolloClient(apollo, httpLink, auth);
-          }
-          break;
-      }
     });
   }
 
@@ -58,12 +44,16 @@ export class ApolloAngularModule {
     const ws = new WebSocketLink({
       uri: WS_GRAPHQL_URL,
       options: {
-        connectionParams: {authorization: `Bearer ${auth.token}`},
+        connectionParams: {
+          authorization: `Bearer ${auth.token}`
+        },
         reconnect: true
       }
     });
 
-    const http = setContext((_, {headers}) => {
+    const http = setContext((_, {
+      headers
+    }) => {
       if (!headers) {
         headers = new HttpHeaders();
       }
@@ -71,8 +61,12 @@ export class ApolloAngularModule {
       if (token) {
         headers = headers.append('authorization', `Bearer ${token}`);
       }
-      return {headers};
-    }).concat(httpLink.create({uri: GRAPHQL_URL}));
+      return {
+        headers
+      };
+    }).concat(httpLink.create({
+      uri: GRAPHQL_URL
+    }));
 
     const link: any = split(({query}) => {
       const res = getMainDefinition(query);
@@ -81,6 +75,9 @@ export class ApolloAngularModule {
 
     const cache: any = new InMemoryCache();
 
-    apollo.create({link, cache}, 'client');
+    apollo.create({
+      link,
+      cache
+    });
   }
 }

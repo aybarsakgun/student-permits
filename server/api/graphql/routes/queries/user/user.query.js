@@ -1,6 +1,6 @@
 import {UserGet} from "../../../../functions/modules/user/user.dao";
 
-export const userDef = `user(id: ID!): User!`;
+export const userDef = `user(id: ID): User!`;
 
 export const user = async (root, { id }, context, info) => {
 	try {

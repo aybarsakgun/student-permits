@@ -25,15 +25,15 @@ export abstract class BaseAuthService extends BaseApolloGraphQLService {
 
   constructor(protected apollo: Apollo, protected store: Store<AppState>) {
     super(apollo);
-    this._Init();
+    this.init();
   }
 
   /**
    * @returns void
    */
-  public SignOut(): void {
+  public signOut(): void {
     localStorage.clear();
-    this.PublishStatus(AUTH_STATUS.PUBLIC);
+    this.publishStatus(AUTH_STATUS.NOT_LOGGED_IN);
     this.store.dispatch(new ClearCurrentUser(null));
   }
 
@@ -41,7 +41,7 @@ export abstract class BaseAuthService extends BaseApolloGraphQLService {
    * @param status (AUTH_STATUS)
    * @returns void
    */
-  protected PublishStatus(status: AUTH_STATUS): void {
+  protected publishStatus(status: AUTH_STATUS): void {
     if (BaseAuthService.status === status) {
       return;
     }
@@ -52,11 +52,11 @@ export abstract class BaseAuthService extends BaseApolloGraphQLService {
   /**
    * @returns void
    */
-  private _Init(): void {
+  private init(): void {
     if (this.token) {
-      this.PublishStatus(AUTH_STATUS.CLIENT);
+      this.publishStatus(AUTH_STATUS.LOGGED_IN);
     } else {
-      this.PublishStatus(AUTH_STATUS.PUBLIC);
+      this.publishStatus(AUTH_STATUS.NOT_LOGGED_IN);
     }
   }
 }

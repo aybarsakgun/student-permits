@@ -1,21 +1,20 @@
-import { json, urlencoded } from 'body-parser';
+import {json, urlencoded} from 'body-parser';
 import cors from 'cors';
 import express from 'express';
-import { existsSync } from 'fs';
+import {existsSync} from 'fs';
 import helmet from 'helmet';
-import { createServer } from 'http';
+import {createServer} from 'http';
 import morgan from 'morgan';
-import { join } from 'path';
+import {join} from 'path';
 
 import './config/dotenv';
 import './config/mongoose';
+import './config/passport-setup';
 
 import routes from './api/routes';
 import routesAuth from './auth/routes';
-import { setGraphQLClientAPI } from './api/graphql/routes';
+import {setGraphQLClientAPI} from './api/graphql/routes';
 import passport from 'passport';
-
-const passportSetup = require('./config/passport-setup');
 
 const app = express();
 const server = createServer(app);
@@ -44,10 +43,12 @@ if (existsSync(clientDirectoryPath)) {
 app.use('*', (req, res) => res.sendStatus(404));
 
 const port = process.env.PORT;
+const baseUrl = process.env.BASE_URL;
+const baseWsUrl = process.env.BASE_WS_URL;
 
 server.listen(port, () => {
-	console.info(`Express server running: http://127.0.0.1:${ port }`);
-	console.info(`Server Restful API: http://127.0.0.1:${ port }/api`);
-	console.info(`GraphQL Client queries/mutations API: http://127.0.0.1:${ port }${ graphqlClientPath }`);
-	console.info(`GraphQL Client subscriptions API: ws://127.0.0.1:${ port }${ graphqlClientSubsPath }`);
+	console.info(`Express server running: ${ baseUrl }:${ port }`);
+	console.info(`Server Restful API: ${ baseUrl }:${ port }/api`);
+	console.info(`GraphQL Client queries/mutations API: ${ baseUrl }:${ port }${ graphqlClientPath }`);
+	console.info(`GraphQL Client subscriptions API: ${ baseWsUrl }:${ port }${ graphqlClientSubsPath }`);
 });

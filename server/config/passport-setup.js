@@ -13,7 +13,7 @@ const checkUser = (user) => {
 
 passport.use(
   new passportGoogle.Strategy({
-      callbackURL: 'http://127.0.0.1:3000/auth/google/callback',
+      callbackURL: `${ process.env.BASE_URL }:${ process.env.PORT }/auth/google/callback`,
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET
     },

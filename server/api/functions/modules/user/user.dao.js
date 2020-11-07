@@ -48,7 +48,7 @@ export async function UserCreate(inputUser, contextUser) {
  * @returns {User}
  */
 export async function UserGet(id, contextUser) {
-  const findUser = await User.findById(id).populate('school');
+  const findUser = await User.findById(id ? id : contextUser.id).populate('school');
 
   await checkAuthorization(findUser, contextUser);
 

@@ -1,6 +1,7 @@
 import DDOS from 'ddos';
 import {Router} from 'express';
 import passport from 'passport';
+import {authenticate} from "../../api/functions/authentication";
 
 const router = Router();
 
@@ -24,20 +25,18 @@ router.get(
   passport.authenticate('google', {
     session: false
   }), (req, res) => {
-    // var responseHTML = '<html><head><title>Main</title></head><body></body><script>res = %value%; window.opener.postMessage(res, "*");window.close();</script></html>';
-    var responseHTML = '<html><head><meta http-equiv="Content-Security-Policy" script-src=\'unsafe-inline\'><title>Main</title></head><body>'+JSON.stringify({
-      user: req.user,
-      token: req.user.generateJWT()
-    })+'</body><script>setTimeout(() => {window.close();}, 5000);</script></html>';
-    console.log(responseHTML);
-    responseHTML = responseHTML.replace('%value%', JSON.stringify({
-      user: req.user,
-      token: req.user.generateJWT()
-    }));
-    res.status(200).send(responseHTML);
-    // res.send(req.user.generateJWT());
+    res.redirect(`${process.env.BASE_URL}:${process.env.CLIENT_PORT}/sign-in?token=` + req.user.generateJWT());
   }
 );
+
+router.post('/verify', async (req, res) => {
+  try {
+    const verify = await authenticate('Bearer ' + req.body.token);
+    res.send(!!verify);
+  } catch (e) {
+    res.send(false);
+  }
+});
 
 router.get('/google/fail', (req, res) => {
   res.send({error: 'sisteme kayıtın yok.'});

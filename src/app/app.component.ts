@@ -3,6 +3,7 @@ import {AUTH_STATUS} from './enums/auth-status.enum';
 import {Subscription} from 'rxjs';
 import {User} from './interfaces/user.interface';
 import {AuthService} from './services/auth/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,12 +12,16 @@ import {AuthService} from './services/auth/auth.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   public authStatus: AUTH_STATUS = AUTH_STATUS.LOADING;
-  private authStatusSub: Subscription = null;
-
   public currentUser: User = null;
-  private currentUserSub: Subscription = null;
 
-  constructor(private auth: AuthService) {
+  private subscriptions: Subscription[] = [];
+
+  public authStatuses = AUTH_STATUS;
+
+  constructor(
+    private auth: AuthService,
+    private router: Router
+  ) {
   }
 
   /**
@@ -24,8 +29,10 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   public ngOnInit(): void {
     try {
-      this.currentUserSub = this.auth.currentUser$.subscribe((user: User) => this.currentUser = user);
-      this.authStatusSub = this.auth.status$.subscribe((status: AUTH_STATUS) => this.authStatus = status);
+      this.subscriptions.push(this.auth.currentUser$.subscribe(async (currentUser: User) => {
+        this.currentUser = currentUser ? currentUser : this.auth.token ? await this.auth.fetchUser() : null;
+      }));
+      this.subscriptions.push(this.auth.status$.subscribe((status: AUTH_STATUS) => this.authStatus = status));
     } catch (err) {
       console.warn('[ERROR] AppComponent.ngOnInit:', err);
     }
@@ -35,18 +42,17 @@ export class AppComponent implements OnInit, OnDestroy {
    * @returns void
    */
   public ngOnDestroy(): void {
-    if (this.authStatusSub) {
-      this.authStatusSub.unsubscribe();
-    }
-    if (this.currentUserSub) {
-      this.currentUserSub.unsubscribe();
-    }
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   /**
    * @returns void
    */
-  public SignOut(): void {
-    this.auth.SignOut();
+  public signOut(): void {
+    this.auth.signOut();
+  }
+
+  public navigate(): void {
+    this.router.navigate(['/asdsada']);
   }
 }

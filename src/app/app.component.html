@@ -1,3 +1,6 @@
 {{authStatus}} - {{currentUser | json}}
+<br>
+<a (click)="signOut()" *ngIf="authStatus === authStatuses.LOGGED_IN">LOGOUT</a>
+<a (click)="navigate()">NAVIGATE</a>
 
 <router-outlet></router-outlet>

@@ -18,9 +18,9 @@ export class PublicGuard implements CanActivate {
         switch (status) {
           case AUTH_STATUS.LOADING:
             break;
-          case AUTH_STATUS.PUBLIC:
+          case AUTH_STATUS.NOT_LOGGED_IN:
             return resolve(true);
-          case AUTH_STATUS.CLIENT:
+          case AUTH_STATUS.LOGGED_IN:
             this.router.navigateByUrl('/');
             return resolve(false);
         }
