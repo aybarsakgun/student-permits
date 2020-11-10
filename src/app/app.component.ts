@@ -3,12 +3,12 @@ import {AUTH_STATUS} from './enums/auth-status.enum';
 import {Subscription} from 'rxjs';
 import {User} from './interfaces/user.interface';
 import {AuthService} from './services/auth/auth.service';
-import {Router} from '@angular/router';
+import {NavigationEnd, Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
   public authStatus: AUTH_STATUS = AUTH_STATUS.LOADING;
@@ -28,6 +28,12 @@ export class AppComponent implements OnInit, OnDestroy {
    * @returns void
    */
   public ngOnInit(): void {
+    this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      window.scrollTo(0, 0);
+    });
     try {
       this.subscriptions.push(this.auth.currentUser$.subscribe(async (currentUser: User) => {
         this.currentUser = currentUser ? currentUser : this.auth.token ? await this.auth.fetchUser() : null;

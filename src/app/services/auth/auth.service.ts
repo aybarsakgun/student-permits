@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {Apollo} from 'apollo-angular';
 
-import {BaseAuthService} from '../../bases/base-auth.service';
+import {BaseAuthService} from './base-auth.service';
 import {AppState} from '../../ngrx/app-state';
 import {AUTH_STATUS} from '../../enums/auth-status.enum';
 import {User} from '../../interfaces/user.interface';
