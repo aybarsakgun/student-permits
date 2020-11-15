@@ -1,26 +1,17 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {GradientConfig} from '../../../app-config';
+import {Component, EventEmitter, Output} from '@angular/core';
 
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
 })
-export class NavigationComponent implements OnInit {
-  public windowWidth: number;
-  public gradientConfig: any;
+export class NavigationComponent {
   @Output() onNavMobCollapse = new EventEmitter();
 
   constructor() {
-    this.gradientConfig = GradientConfig.config;
-    this.windowWidth = window.innerWidth;
   }
 
-  ngOnInit() { }
-
-  navMobCollapse() {
-    if (this.windowWidth < 992) {
-      this.onNavMobCollapse.emit();
-    }
+  navMobCollapse(): void {
+    this.onNavMobCollapse.emit();
   }
 }

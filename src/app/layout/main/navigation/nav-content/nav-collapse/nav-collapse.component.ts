@@ -1,6 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {animate, style, transition, trigger} from '@angular/animations';
-import {GradientConfig} from '../../../../../app-config';
 import {NavigationItem} from '../../navigation';
 
 @Component({
@@ -19,42 +18,26 @@ import {NavigationItem} from '../../navigation';
     ])
   ],
 })
-export class NavCollapseComponent implements OnInit {
-  public visible;
+export class NavCollapseComponent {
   @Input() item: NavigationItem;
-  public gradientConfig: any;
-  public themeLayout: string;
 
   constructor() {
-    this.visible = false;
-    this.gradientConfig = GradientConfig.config;
-    this.themeLayout = this.gradientConfig.layout;
   }
 
-  ngOnInit() {
-  }
-
-  navCollapse(e) {
-    this.visible = !this.visible;
-
-    let parent = e.target;
-    if (this.themeLayout === 'vertical') {
-      parent = parent.parentElement;
-    }
-
+  navCollapse(event): void {
+    let parent = event.target;
+    parent = parent.parentElement;
     const sections = document.querySelectorAll('.pcoded-hasmenu');
-    for (let i = 0; i < sections.length; i++) {
-      if (sections[i] !== parent) {
-        sections[i].classList.remove('pcoded-trigger');
+    sections.forEach((_, index) => {
+      if (sections[index] !== parent) {
+        sections[index].classList.remove('pcoded-trigger');
       }
-    }
-
+    });
     let firstParent = parent.parentElement;
     let preParent = parent.parentElement.parentElement;
     if (firstParent.classList.contains('pcoded-hasmenu')) {
       do {
         firstParent.classList.add('pcoded-trigger');
-        // firstParent.parentElement.classList.toggle('pcoded-trigger');
         firstParent = firstParent.parentElement.parentElement.parentElement;
       } while (firstParent.classList.contains('pcoded-hasmenu'));
     } else if (preParent.classList.contains('pcoded-submenu')) {
@@ -65,5 +48,4 @@ export class NavCollapseComponent implements OnInit {
     }
     parent.classList.toggle('pcoded-trigger');
   }
-
 }

@@ -17,7 +17,6 @@ import {NavCollapseComponent} from './layout/main/navigation/nav-content/nav-col
 import {NavContentComponent} from './layout/main/navigation/nav-content/nav-content.component';
 import {NavItemComponent} from './layout/main/navigation/nav-content/nav-item/nav-item.component';
 import {NavSearchComponent} from './layout/main/nav-bar/nav-left/nav-search/nav-search.component';
-import {ConfigurationComponent} from './layout/main/configuration/configuration.component';
 import {NavigationComponent} from './layout/main/navigation/navigation.component';
 import {NavBarComponent} from './layout/main/nav-bar/nav-bar.component';
 import {AuthComponent} from './layout/auth/auth.component';
@@ -49,8 +48,7 @@ import {environment} from '../environments/environment';
     NavRightComponent,
     ChatUserListComponent,
     FriendComponent,
-    ChatMsgComponent,
-    ConfigurationComponent
+    ChatMsgComponent
   ],
   imports: [
     AppRoutingModule,

@@ -1,40 +1,33 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GradientConfig} from '../../../app-config';
+import {Component, EventEmitter, HostListener, Output} from '@angular/core';
 
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss']
 })
-export class NavBarComponent implements OnInit {
-  public gradientConfig: any;
-  public menuClass: boolean;
-  public collapseStyle: string;
+export class NavBarComponent {
+  public menuClass = false;
   public windowWidth: number;
 
   @Output() onNavCollapse = new EventEmitter();
   @Output() onNavHeaderMobCollapse = new EventEmitter();
 
+  @HostListener('window:resize', ['$event'])
+  private onResize(event: UIEvent): void {
+    this.windowWidth = (event.target as Window).innerWidth;
+  }
+
   constructor() {
-    this.gradientConfig = GradientConfig.config;
-    this.menuClass = false;
-    this.collapseStyle = 'none';
     this.windowWidth = window.innerWidth;
   }
 
-  ngOnInit() { }
-
-  toggleMobOption() {
-    this.menuClass = !this.menuClass;
-    this.collapseStyle = (this.menuClass) ? 'block' : 'none';
-  }
-
-  navCollapse() {
+  navCollapse(): void {
     if (this.windowWidth >= 992) {
       this.onNavCollapse.emit();
     } else {
       this.onNavHeaderMobCollapse.emit();
     }
   }
-
 }
+
+// TODO: layout > main > nav-bar > nav-left & nav-right needs optimize &&& component > card & modal & spinner & toast needs optimize too.

@@ -1,14 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {Apollo} from 'apollo-angular';
-import {User} from '../../interfaces/user.interface';
+import {User, USER_ROLE} from '../../interfaces/user.interface';
 import {DocumentNode} from 'graphql';
 import {filter, map, take, withLatestFrom} from 'rxjs/operators';
 import {ApolloService} from '../apollo/apollo.service';
 import * as fromRoot from '../../ngrx/index';
 import * as _authActions from '../../ngrx/actions/auth.actions';
 import {Observable} from 'rxjs';
-import {USER_ROLE} from '../../enums/user-role.enum';
 import {accessTokenKey} from '../../constants';
 import {gql} from '@apollo/client/core';
 

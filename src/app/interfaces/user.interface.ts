@@ -1,5 +1,11 @@
-import {USER_ROLE} from '../enums/user-role.enum';
 import {School} from './school.interface';
+
+export enum USER_ROLE {
+  ADMIN = 'ADMIN',
+  SCHOOL_ADMIN = 'SCHOOL_ADMIN',
+  TEACHER = 'TEACHER',
+  STUDENT = 'STUDENT',
+}
 
 export interface User {
   id: string;

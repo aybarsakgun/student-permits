@@ -9,6 +9,7 @@ import {ModalModule} from '../components/modal/modal.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ToastComponent} from '../components/toast/toast.component';
 import {PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
+import {ClickOutsideModule} from 'ng-click-outside';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -24,6 +25,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CardModule,
     BreadcrumbModule,
     ModalModule,
+    ClickOutsideModule
   ],
   declarations: [
     SpinnerComponent,
@@ -39,7 +41,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BreadcrumbModule,
     ModalModule,
     SpinnerComponent,
-    ToastComponent
+    ToastComponent,
+    ClickOutsideModule
   ],
   providers: [
     {

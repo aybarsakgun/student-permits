@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AlertComponent } from './alert.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {AlertComponent} from './alert.component';
 
 @NgModule({
   imports: [
@@ -9,4 +9,5 @@ import { AlertComponent } from './alert.component';
   declarations: [AlertComponent],
   exports: [AlertComponent]
 })
-export class AlertModule { }
+export class AlertModule {
+}

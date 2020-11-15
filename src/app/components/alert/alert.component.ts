@@ -1,21 +1,18 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-alert',
   templateUrl: './alert.component.html',
   styleUrls: ['./alert.component.scss']
 })
-export class AlertComponent implements OnInit {
+export class AlertComponent {
   @Input() type: string;
   @Input() dismiss: string;
 
-  public dismissAlert(element) {
+  constructor() {
+  }
+
+  public dismissAlert(element): void {
     element.parentElement.removeChild(element);
   }
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
 }

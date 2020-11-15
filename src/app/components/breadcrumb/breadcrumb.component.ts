@@ -12,14 +12,13 @@ import {Subscription} from 'rxjs';
 })
 export class BreadcrumbComponent implements OnInit, OnDestroy {
   private routerEvents$: Subscription = null;
-  private navigation: NavigationItem[] = [];
+  private navigation: NavigationItem[] = NavigationItems;
   public navigationList: NavigationItem[] = [];
 
   constructor(
     private route: Router,
     private titleService: Title
   ) {
-    this.navigation = NavigationItems;
     this.setBreadcrumb();
   }
 
