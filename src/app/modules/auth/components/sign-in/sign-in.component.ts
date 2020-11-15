@@ -7,6 +7,7 @@ import * as fromRoot from '../../../../ngrx/index';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {User} from '../../../../interfaces/user.interface';
+import {appName} from '../../../../constants';
 
 @Component({
   selector: 'app-sign-in',
@@ -17,12 +18,12 @@ export class SignInComponent {
   public currentUser$: Observable<User> = null;
 
   constructor(
-    title: Title,
+    private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private store: Store<fromRoot.State>
   ) {
-    title.setTitle('Sign In - Student Permits');
+    this.titleService.setTitle('Sign In - ' + appName);
     const queryParams: ParamMap = this.activatedRoute.snapshot.queryParamMap;
     if (queryParams.has('accessToken')) {
       this.currentUser$ = this.store.select(fromRoot.getAuthUser);

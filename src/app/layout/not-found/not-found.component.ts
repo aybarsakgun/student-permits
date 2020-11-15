@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
+import {appName} from '../../constants';
 
 @Component({
   selector: 'app-page-not-found',
@@ -10,8 +11,11 @@ import {Title} from '@angular/platform-browser';
 export class NotFoundComponent implements OnInit {
   public seconds = 5;
 
-  constructor(title: Title, private router: Router) {
-    title.setTitle('404 - Student Permits');
+  constructor(
+    private titleService: Title,
+    private router: Router
+  ) {
+    this.titleService.setTitle('404 Not Found - ' + appName);
   }
 
   public ngOnInit(): void {

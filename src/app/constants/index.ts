@@ -7,3 +7,4 @@ export const GRAPHQL_URL = `${ API_URL }/graphql`;
 export const WS_GRAPHQL_URL = `${ WS_API_URL }/graphql`;
 
 export const accessTokenKey = 'accessToken';
+export const appName = 'Student Permits';

@@ -8,7 +8,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {SharedModule} from './modules/shared.module';
 import {NgbButtonsModule, NgbDropdownModule, NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ApolloAngularModule} from './modules/apollo-angular.module';
+import {ApolloModule} from './modules/apollo.module';
 import {NavLeftComponent} from './layout/main/nav-bar/nav-left/nav-left.component';
 import {MainComponent} from './layout/main/main.component';
 import {NavGroupComponent} from './layout/main/navigation/nav-content/nav-group/nav-group.component';
@@ -56,7 +56,7 @@ import {environment} from '../environments/environment';
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
-    ApolloAngularModule,
+    ApolloModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([AuthEffects]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],

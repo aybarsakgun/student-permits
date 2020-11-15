@@ -4,7 +4,7 @@ import {Apollo} from 'apollo-angular';
 import {User} from '../../interfaces/user.interface';
 import {DocumentNode} from 'graphql';
 import {filter, map, take, withLatestFrom} from 'rxjs/operators';
-import {BaseApolloGraphQLService} from '../apollo/base-apollo-graphql.service';
+import {ApolloService} from '../apollo/apollo.service';
 import * as fromRoot from '../../ngrx/index';
 import * as _authActions from '../../ngrx/actions/auth.actions';
 import {Observable} from 'rxjs';
@@ -15,7 +15,7 @@ import {gql} from '@apollo/client/core';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService extends BaseApolloGraphQLService {
+export class AuthService extends ApolloService {
   constructor(
     protected apollo: Apollo,
     private store: Store<fromRoot.State>

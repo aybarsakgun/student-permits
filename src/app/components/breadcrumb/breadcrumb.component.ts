@@ -1,27 +1,29 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
-import {NavigationItems} from '../../layout/main/navigation/navigation';
+import {NavigationItem, NavigationItems} from '../../layout/main/navigation/navigation';
+import {appName} from '../../constants';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-breadcrumb',
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.scss']
 })
-export class BreadcrumbComponent implements OnInit {
-  @Input() type: string;
+export class BreadcrumbComponent implements OnInit, OnDestroy {
+  private routerEvents$: Subscription = null;
+  private navigation: NavigationItem[] = [];
+  public navigationList: NavigationItem[] = [];
 
-  public navigation: any;
-  breadcrumbList: Array<any> = [];
-  public navigationList: Array<any> = [];
-
-  constructor(private route: Router, private titleService: Title) {
+  constructor(
+    private route: Router,
+    private titleService: Title
+  ) {
     this.navigation = NavigationItems;
-    this.type = 'theme2';
     this.setBreadcrumb();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     let routerUrl: string;
     routerUrl = this.route.url;
     if (routerUrl && typeof routerUrl === 'string') {
@@ -29,21 +31,24 @@ export class BreadcrumbComponent implements OnInit {
     }
   }
 
-  setBreadcrumb() {
+  ngOnDestroy(): void {
+    this.routerEvents$.unsubscribe();
+  }
+
+  private setBreadcrumb(): void {
     let routerUrl: string;
-    this.route.events.subscribe((router: any) => {
+    this.routerEvents$ = this.route.events.subscribe((router: any) => {
       routerUrl = router.urlAfterRedirects;
       if (routerUrl && typeof routerUrl === 'string') {
-        this.breadcrumbList.length = 0;
         const activeLink = router.url;
         this.filterNavigation(activeLink);
       }
     });
   }
 
-  filterNavigation(activeLink) {
+  private filterNavigation(activeLink): void {
     let result = [];
-    let title = 'Welcome';
+    let title = 'Dashboard';
     this.navigation.forEach((a) => {
       if (a.type === 'item' && 'url' in a && a.url === activeLink) {
         result = [
@@ -124,7 +129,7 @@ export class BreadcrumbComponent implements OnInit {
       }
     });
     this.navigationList = result;
-    this.titleService.setTitle(title + ' | Gradient Able Angular 8+ Admin Template');
+    this.titleService.setTitle(title + ' - ' + appName);
   }
 
 }

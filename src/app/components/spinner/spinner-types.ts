@@ -1,4 +1,4 @@
-export const Spinkit = {
+export const spinnerTypes = {
     skChasingDots: 'sk-chasing-dots',
     skCubeGrid: 'sk-cube-grid',
     skDoubleBounce: 'sk-double-bounce',

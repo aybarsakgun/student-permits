@@ -1,7 +1,6 @@
 import {User} from '../../interfaces/user.interface';
 import {AuthAction, AuthActions} from '../actions/auth.actions';
 
-
 export interface State {
   loading: boolean;
   user: User;

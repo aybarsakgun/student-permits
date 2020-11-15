@@ -21,7 +21,7 @@ import {filter, take} from 'rxjs/operators';
     HttpLinkModule
   ]
 })
-export class ApolloAngularModule {
+export class ApolloModule {
   constructor(
     private apollo: Apollo,
     private httpLink: HttpLink,

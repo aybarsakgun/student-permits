@@ -2,7 +2,7 @@ import {Apollo, gql} from 'apollo-angular';
 import {Observable, Subscription} from 'rxjs';
 import {DocumentNode} from 'graphql';
 
-export abstract class BaseApolloGraphQLService {
+export abstract class ApolloService {
 
   protected constructor(
     protected apollo: Apollo
