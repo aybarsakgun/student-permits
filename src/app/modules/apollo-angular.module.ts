@@ -7,10 +7,10 @@ import {getMainDefinition} from 'apollo-utilities';
 import {setContext} from 'apollo-link-context';
 import {WebSocketLink} from 'apollo-link-ws';
 import {ApolloLink, split} from 'apollo-link';
-
-import {GRAPHQL_URL, WS_GRAPHQL_URL} from '../constants/urls';
-import {AUTH_STATUS} from '../enums/auth-status.enum';
-import {AuthService} from '../services/auth/auth.service';
+import {accessTokenKey, GRAPHQL_URL, WS_GRAPHQL_URL} from '../constants';
+import {Store} from '@ngrx/store';
+import * as fromRoot from '../ngrx/index';
+import {filter, take} from 'rxjs/operators';
 
 @NgModule({
   imports: [
@@ -22,30 +22,39 @@ import {AuthService} from '../services/auth/auth.service';
   ]
 })
 export class ApolloAngularModule {
-  private authStatus: AUTH_STATUS = AUTH_STATUS.LOADING;
-
-  constructor(apollo: Apollo, httpLink: HttpLink, auth: AuthService) {
-    this._createApolloClient(apollo, httpLink, auth);
-    auth.status$.subscribe((status: AUTH_STATUS) => {
-      if (this.authStatus === status) {
-        return;
+  constructor(
+    private apollo: Apollo,
+    private httpLink: HttpLink,
+    private store: Store<fromRoot.State>
+  ) {
+    this.createApolloClient();
+    this.store.select(fromRoot.getAuthUser).pipe(
+      filter(user => !!(user && user.accessToken)),
+      take(1)
+    ).subscribe(user => {
+      localStorage.setItem(accessTokenKey, user.accessToken);
+      const apolloClient = this.apollo.default().client;
+      if (apolloClient) {
+        apolloClient.setLink(this.createApolloLink() as any);
       }
-      this.authStatus = status;
     });
   }
 
-  /**
-   * @param apollo (Apollo)
-   * @param httpLink (HttpLink)
-   * @param auth (AuthService)
-   * @returns void
-   */
-  private _createApolloClient(apollo: Apollo, httpLink: HttpLink, auth: AuthService): void {
+  private createApolloClient(): void {
+    const cache: any = new InMemoryCache();
+    this.apollo.create({
+      link: this.createApolloLink() as any,
+      cache
+    });
+  }
+
+  private createApolloLink(): ApolloLink {
+    const accessToken: string = localStorage.getItem(accessTokenKey);
     const ws = new WebSocketLink({
       uri: WS_GRAPHQL_URL,
       options: {
         connectionParams: {
-          authorization: `Bearer ${auth.token}`
+          authorization: `Bearer ${accessToken}`
         },
         reconnect: true
       }
@@ -57,27 +66,19 @@ export class ApolloAngularModule {
       if (!headers) {
         headers = new HttpHeaders();
       }
-      const token: string = auth.token;
-      if (token) {
-        headers = headers.append('authorization', `Bearer ${token}`);
+      if (accessToken) {
+        headers = headers.append('authorization', `Bearer ${accessToken}`);
       }
       return {
         headers
       };
-    }).concat(httpLink.create({
+    }).concat(this.httpLink.create({
       uri: GRAPHQL_URL
     }));
 
-    const link: any = split(({query}) => {
+    return split(({query}) => {
       const res = getMainDefinition(query);
       return res.kind === 'OperationDefinition' && res.operation === 'subscription';
     }, ws, http);
-
-    const cache: any = new InMemoryCache();
-
-    apollo.create({
-      link,
-      cache
-    });
   }
 }

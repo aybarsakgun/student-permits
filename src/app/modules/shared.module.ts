@@ -8,7 +8,6 @@ import {SpinnerComponent} from '../components/spinner/spinner.component';
 import {ModalModule} from '../components/modal/modal.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ToastComponent} from '../components/toast/toast.component';
-import {ApolloAngularModule} from './apollo-angular.module';
 import {PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -35,7 +34,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PerfectScrollbarModule,
     FormsModule,
     ReactiveFormsModule,
-
     AlertModule,
     CardModule,
     BreadcrumbModule,

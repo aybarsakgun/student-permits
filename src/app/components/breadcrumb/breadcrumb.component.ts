@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
-import {NavigationItem} from '../../layout/main/navigation/navigation';
+import {NavigationItems} from '../../layout/main/navigation/navigation';
 
 @Component({
   selector: 'app-breadcrumb',
@@ -15,8 +15,8 @@ export class BreadcrumbComponent implements OnInit {
   breadcrumbList: Array<any> = [];
   public navigationList: Array<any> = [];
 
-  constructor(private route: Router, public nav: NavigationItem, private titleService: Title) {
-    this.navigation = this.nav.get();
+  constructor(private route: Router, private titleService: Title) {
+    this.navigation = NavigationItems;
     this.type = 'theme2';
     this.setBreadcrumb();
   }

@@ -1,5 +1,3 @@
-import {Injectable} from '@angular/core';
-
 export interface NavigationItem {
   id: string;
   title: string;
@@ -18,14 +16,10 @@ export interface NavigationItem {
     title?: string;
     type?: string;
   };
-  children?: Navigation[];
-}
-
-export interface Navigation extends NavigationItem {
   children?: NavigationItem[];
 }
 
-const NavigationItems = [
+export const NavigationItems = [
   {
     id: 'navigation',
     title: 'Navigation',
@@ -262,9 +256,3 @@ const NavigationItems = [
   }
 ];
 
-@Injectable()
-export class NavigationItem {
-  public get() {
-    return NavigationItems;
-  }
-}

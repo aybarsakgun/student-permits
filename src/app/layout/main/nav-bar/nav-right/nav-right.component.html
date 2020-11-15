@@ -1,4 +1,4 @@
-<ul class="navbar-nav ml-auto">
+<ul class="navbar-nav ml-auto" *ngIf="currentUser$ | async as user">
   <li>
     <div class="dropdown" ngbDropdown placement="auto">
       <a ngbDropdownToggle href="javascript:" data-toggle="dropdown"><i class="icon feather icon-bell"></i><span class="badge bg-danger"><span class="sr-only"></span></span></a>
@@ -66,8 +66,8 @@
       <div class="dropdown-menu dropdown-menu-right profile-notification" ngbDropdownMenu>
         <div class="pro-head">
           <img src="assets/images/user/avatar-1.jpg" class="img-radius" alt="User-Profile-Image">
-          <span>John Doe</span>
-          <a href="javascript:" class="dud-logout" title="Logout">
+          <span>{{ user.name }}</span>
+          <a (click)="signOut()" class="dud-logout" title="Logout">
             <i class="feather icon-log-out"></i>
           </a>
         </div>
@@ -86,13 +86,5 @@
 </section>
 
 <section class="header-chat" *ngIf="chatMessage && !this.gradientConfig['rtl-layout']" [ngClass]="{'open': chatMessage}" [@slideInOutLeft]>
-  <app-chat-msg (onChatToggle)="this.chatMessage = !this.chatMessage" [friendId]="friendId"></app-chat-msg>
-</section>
-
-<section class="header-user-list" *ngIf="visibleUserList && this.gradientConfig['rtl-layout']" [ngClass]="{'open': visibleUserList}" [@slideInOutRight]>
-  <app-chat-user-list (onChatToggle)="onChatToggle($event)" (onChatCollapse)="this.visibleUserList = !this.visibleUserList; this.chatMessage = false;"></app-chat-user-list>
-</section>
-
-<section class="header-chat" *ngIf="chatMessage && this.gradientConfig['rtl-layout']" [ngClass]="{'open': chatMessage}" [@slideInOutRight]>
   <app-chat-msg (onChatToggle)="this.chatMessage = !this.chatMessage" [friendId]="friendId"></app-chat-msg>
 </section>

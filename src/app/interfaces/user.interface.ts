@@ -11,4 +11,5 @@ export interface User {
   school: School;
   createdAt: string;
   updatedAt: string;
+  accessToken?: string;
 }

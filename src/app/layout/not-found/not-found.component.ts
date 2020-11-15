@@ -14,9 +14,6 @@ export class NotFoundComponent implements OnInit {
     title.setTitle('404 - Student Permits');
   }
 
-  /**
-   * @returns void
-   */
   public ngOnInit(): void {
     window.scroll(0, 0);
     const interval = setInterval(() => {

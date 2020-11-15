@@ -6,6 +6,7 @@
           <div class="card-body">
             <img src="assets/images/logo-dark.png" alt="" class="img-fluid mb-4">
             <h4 class="mb-3 f-w-400">Signin</h4>
+            <h4 class="mb-3 f-w-400" *ngIf="currentUser$ | async">LOADING!!!!</h4>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="feather icon-mail"></i></span>
@@ -24,7 +25,7 @@
                 <label for="checkbox-fill-a1" class="cr"> Save credentials</label>
               </div>
             </div>
-            <button class="btn btn-block btn-primary mb-4">Signin</button>
+            <button class="btn btn-block btn-primary mb-4" (click)="signIn()">Signin</button>
             <p class="mb-2 text-muted">Forgot password? <a [routerLink]="['/auth/reset-password']" class="f-w-400">Reset</a></p>
             <p class="mb-0 text-muted">Don’t have an account? <a [routerLink]="['/auth/signup']" class="f-w-400">Signup</a></p>
           </div>

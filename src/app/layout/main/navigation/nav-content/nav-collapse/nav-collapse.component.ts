@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NavigationItem} from '../../navigation';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {GradientConfig} from '../../../../../app-config';
+import {NavigationItem} from '../../navigation';
 
 @Component({
   selector: 'app-nav-collapse',

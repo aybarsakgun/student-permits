@@ -1,7 +1,14 @@
-import {Component, DoCheck, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {GradientConfig} from '../../../../app-config';
+import {Observable} from 'rxjs';
+import {User} from '../../../../interfaces/user.interface';
+import * as fromRoot from '../../../../ngrx/index';
+import * as _authActions from '../../../../ngrx/actions/auth.actions';
+import {Router} from '@angular/router';
+import {Store} from '@ngrx/store';
+import {AuthService} from '../../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-nav-right',
@@ -29,30 +36,32 @@ import {GradientConfig} from '../../../../app-config';
     ])
   ]
 })
-export class NavRightComponent implements OnInit, DoCheck {
+export class NavRightComponent {
   public visibleUserList: boolean;
   public chatMessage: boolean;
   public friendId: boolean;
   public gradientConfig: any;
 
-  constructor() {
+  public currentUser$: Observable<User> = null;
+
+  constructor(
+    private router: Router,
+    private store: Store<fromRoot.State>,
+    private authService: AuthService
+  ) {
     this.visibleUserList = false;
     this.chatMessage = false;
     this.gradientConfig = GradientConfig.config;
+    this.currentUser$ = this.store.select(fromRoot.getAuthUser);
   }
 
-  ngOnInit() { }
-
-  onChatToggle(friendID) {
+  onChatToggle(friendID): void {
     this.friendId = friendID;
     this.chatMessage = !this.chatMessage;
   }
 
-  ngDoCheck() {
-    if (document.querySelector('body').classList.contains('elite-rtl')) {
-      this.gradientConfig['rtl-layout'] = true;
-    } else {
-      this.gradientConfig['rtl-layout'] = false;
-    }
+  public signOut(): void {
+    this.authService.signOut();
+    this.router.navigateByUrl('/auth/sign-in');
   }
 }
