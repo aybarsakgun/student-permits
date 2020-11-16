@@ -7,7 +7,7 @@
   <a href="javascript:" class="h-close-text" (click)="onChatCollapse.emit();"><i class="feather icon-chevrons-right"></i></a>
   <div class="main-friend-cont scroll-div">
     <div class="main-friend-list">
-      <perfect-scrollbar ngClass="elite-scroll" [style.max-width]="'350px'" [style.max-height]="'calc(100vh - 85px)'" [usePSClass]="'elite'" [disabled]="null">
+      <perfect-scrollbar ngClass="elite-scroll" [style.max-width]="'350px'" [style.max-height]="'calc(100vh - 67px)'" [usePSClass]="'elite'" [disabled]="null">
         <ng-container *ngFor="let friends of friendsList">
           <app-friend (onChatOn)="onChatOn(friends.id)" [friends]="friends"></app-friend>
         </ng-container>
