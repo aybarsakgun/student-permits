@@ -1,21 +1,18 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-friend',
   templateUrl: './friend.component.html',
   styleUrls: ['./friend.component.scss']
 })
-export class FriendComponent implements OnInit {
+export class FriendComponent {
   @Input() friends;
   @Output() onChatOn = new EventEmitter();
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor() {
   }
 
-  public innerChatToggle(id) {
+  public innerChatToggle(friendId: number): void {
     this.onChatOn.emit();
   }
-
 }

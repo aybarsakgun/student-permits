@@ -1,17 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-nav-search',
   templateUrl: './nav-search.component.html',
   styleUrls: ['./nav-search.component.scss']
 })
-export class NavSearchComponent implements OnInit {
-  public searchOn: boolean;
+export class NavSearchComponent {
+  public searchOn = false;
 
   constructor() {
-    this.searchOn = false;
   }
-
-  ngOnInit() { }
-
 }

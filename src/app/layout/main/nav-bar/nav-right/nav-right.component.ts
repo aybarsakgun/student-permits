@@ -1,11 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
 import {animate, style, transition, trigger} from '@angular/animations';
-import {GradientConfig} from '../../../../app-config';
 import {Observable} from 'rxjs';
 import {User} from '../../../../interfaces/user.interface';
 import * as fromRoot from '../../../../ngrx/index';
-import * as _authActions from '../../../../ngrx/actions/auth.actions';
 import {Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {AuthService} from '../../../../services/auth/auth.service';
@@ -37,11 +35,9 @@ import {AuthService} from '../../../../services/auth/auth.service';
   ]
 })
 export class NavRightComponent {
-  public visibleUserList: boolean;
-  public chatMessage: boolean;
-  public friendId: boolean;
-  public gradientConfig: any;
-
+  public visibleUserList = false;
+  public chatMessage = false;
+  public friendId: number;
   public currentUser$: Observable<User> = null;
 
   constructor(
@@ -49,9 +45,6 @@ export class NavRightComponent {
     private store: Store<fromRoot.State>,
     private authService: AuthService
   ) {
-    this.visibleUserList = false;
-    this.chatMessage = false;
-    this.gradientConfig = GradientConfig.config;
     this.currentUser$ = this.store.select(fromRoot.getAuthUser);
   }
 

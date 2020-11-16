@@ -7,9 +7,8 @@ import {PerfectScrollbarComponent} from 'ngx-perfect-scrollbar';
   styleUrls: ['./chat-msg.component.scss']
 })
 export class ChatMsgComponent implements OnInit {
-  @Input() friendId;
+  @Input() friendId: number;
   @Output() onChatToggle = new EventEmitter();
-  @ViewChild('newChat', {static: false, read: ElementRef}) public newChat: ElementRef;
   @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef?: PerfectScrollbarComponent;
   public friendsList: any;
   public userChat: any;
