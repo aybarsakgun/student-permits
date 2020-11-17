@@ -1,0 +1,48 @@
+@import "themes/font/theme-font";
+
+@import "themes/plugin/perfect-scrollbar";
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "settings/custom-variables";
+@import "settings/theme-variables";
+
+@import "ng-module/ng-module";
+
+@import "~bootstrap/scss/bootstrap";
+
+@import "themes/font/datta-icon";
+@import "themes/font/feather";
+@import "themes/font/fontawesome";
+@import "themes/font/flaticon";
+
+@import "themes/bootstrap-overlay/card";
+@import "themes/bootstrap-overlay/button";
+@import "themes/bootstrap-overlay/radiobox-checkbox";
+@import "themes/bootstrap-overlay/switches";
+@import "themes/bootstrap-overlay/badge";
+
+@import "themes/general";
+@import "themes/generic";
+@import "themes/plugin/animate";
+
+@import "themes/layouts/menu-lite";
+@import "themes/layouts/menu-ng";
+
+@import "themes/dashboard/widget";
+
+@import "themes/plugin/sweatalert";
+@import "themes/plugin/lightbox";
+@import "themes/plugin/notification";
+@import "themes/plugin/rangeslider";
+@import "themes/plugin/maxlength";
+@import "themes/plugin/select2";
+@import "themes/plugin/data-tables";
+
+@import "themes/pages/authentication";
+@import "themes/pages/pages";
+@import "themes/pages/icon-lauouts";
+
+@import "themes/chat/chat";
+
+@import "themes/custom";

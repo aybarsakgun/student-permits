@@ -1,0 +1,11 @@
+<perfect-scrollbar (clickOutside)="navMob()" [excludeBeforeClick]="true" [exclude]="'#mobile-collapse'" id="nav-ps-gradient-able" class="gradientscroll" [style.max-width]="'300px'" [usePSClass]="true" [disabled]="null">
+  <div class="navbar-content">
+    <ul class="nav pcoded-inner-navbar">
+      <ng-container *ngFor="let item of navigation">
+        <app-nav-group *ngIf="item.type=='group'" [item]="item"></app-nav-group>
+        <app-nav-collapse *ngIf="item.type=='collapse'" [item]="item"></app-nav-collapse>
+        <app-nav-item *ngIf="item.type=='item'" [item]="item"></app-nav-item>
+      </ng-container>
+    </ul>
+  </div>
+</perfect-scrollbar>

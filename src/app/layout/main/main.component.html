@@ -1,0 +1,16 @@
+<app-navigation class="pcoded-navbar menupos-fixed menu-light" [ngClass]="{'navbar-collapsed' : navCollapsed, 'mob-open' : navCollapsedMob}" (onNavMobCollapse)="this.navCollapsedMob = !this.navCollapsedMob"></app-navigation>
+<app-nav-bar class="navbar pcoded-header headerpos-fixed header-blue navbar-expand-lg navbar-light" (onNavCollapse)="this.navCollapsed = !this.navCollapsed;" (onNavHeaderMobCollapse)="this.navCollapsedMob = !this.navCollapsedMob"></app-nav-bar>
+<div class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+            <app-breadcrumb></app-breadcrumb>
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
