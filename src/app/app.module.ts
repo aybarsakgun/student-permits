@@ -30,6 +30,8 @@ import {EffectsModule} from '@ngrx/effects';
 import {AuthEffects} from './ngrx/effects/auth.effects';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
+import {ConfigService} from './services/core/config/config.service';
+import {CoreEffects} from './ngrx/effects/core.effects';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,7 @@ import {environment} from '../environments/environment';
     BrowserAnimationsModule,
     ApolloModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, CoreEffects]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     SharedModule,
     NgbDropdownModule,
@@ -66,7 +68,8 @@ import {environment} from '../environments/environment';
   providers: [
     AuthService,
     PublicGuard,
-    ClientGuard
+    ClientGuard,
+    ConfigService
   ],
   bootstrap: [
     AppComponent

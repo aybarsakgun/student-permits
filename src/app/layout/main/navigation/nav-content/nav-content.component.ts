@@ -1,5 +1,9 @@
 import {Component, EventEmitter, Output} from '@angular/core';
-import {NavigationItem, NavigationItems} from '../navigation';
+import {Store} from '@ngrx/store';
+import * as fromRoot from '../../../../ngrx';
+import {Observable} from 'rxjs';
+import {NavigationItem} from '../navigation';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-nav-content',
@@ -8,11 +12,14 @@ import {NavigationItem, NavigationItems} from '../navigation';
 })
 export class NavContentComponent {
 
-  public navigation: NavigationItem[] = NavigationItems;
+  public navigation$: Observable<NavigationItem[]> = null;
 
   @Output() onNavMobCollapse = new EventEmitter();
 
-  constructor() {
+  constructor(
+    private store: Store<fromRoot.State>
+  ) {
+    this.navigation$ = this.store.select(fromRoot.getConfigs).pipe(map((config) => config.navigation));
   }
 
   navMob(): void {

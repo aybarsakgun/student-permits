@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 
 @Component({
   selector: 'app-main',
@@ -7,6 +7,13 @@ import {Component} from '@angular/core';
 export class MainComponent {
   public navCollapsed = false;
   public navCollapsedMob = false;
+
+  @HostListener('window:resize', ['$event'])
+  private onResize(event: UIEvent): void {
+    if ((event.target as Window).innerWidth <= 992) {
+      this.navCollapsed = false;
+    }
+  }
 
   constructor() {
   }
