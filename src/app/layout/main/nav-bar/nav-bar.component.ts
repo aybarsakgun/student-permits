@@ -1,4 +1,5 @@
 import {Component, EventEmitter, HostListener, Output} from '@angular/core';
+import {appName} from '../../../constants';
 
 @Component({
   selector: 'app-nav-bar',
@@ -8,6 +9,7 @@ import {Component, EventEmitter, HostListener, Output} from '@angular/core';
 export class NavBarComponent {
   public menuClass = false;
   public windowWidth: number;
+  public appName = appName;
 
   @Output() onNavCollapse = new EventEmitter();
   @Output() onNavHeaderMobCollapse = new EventEmitter();

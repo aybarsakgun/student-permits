@@ -11,7 +11,7 @@ export const initialState: State = {
   user: null,
 };
 
-export function appReducer(state = initialState, action: AuthAction): State {
+export function authReducer(state = initialState, action: AuthAction): State {
   switch (action.type) {
     case AuthActions.GetUser: {
       return {...state, loading: true};
