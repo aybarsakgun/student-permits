@@ -23,10 +23,10 @@ passport.use(
         const email = profile.emails[0].value;
         const user = await User.findOne({email: email});
         if (checkUser(user)) {
-          return done(null, user);
+          done(null, user);
         }
       } catch (error) {
-        return done(error);
+        done(error);
       }
     })
 );
