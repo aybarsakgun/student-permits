@@ -1,7 +1,6 @@
 import DDOS from 'ddos';
 import {Router} from 'express';
 import passport from 'passport';
-import {authenticate} from "../../api/functions/authentication";
 
 const router = Router();
 

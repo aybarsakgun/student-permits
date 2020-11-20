@@ -19,14 +19,15 @@ passport.use(
       passReqToCallback: process.env.DEV_ENV === 'false'
     },
     async function (accessToken, refreshToken, profile, done) {
-      try {
-        const email = profile.emails[0].value;
-        const user = await User.findOne({email: email});
-        if (checkUser(user)) {
-          done(null, user);
-        }
-      } catch (error) {
-        done(error);
-      }
+      // try {
+      //   const email = profile.emails[0].value;
+      //   const user = await User.findOne({email: email});
+      //   if (checkUser(user)) {
+      //     done(null, user);
+      //   }
+      // } catch (error) {
+      //   done(error);
+      // }
+      done(null, {test: true});
     })
 );
