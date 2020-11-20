@@ -1,5 +1,0 @@
-export enum AUTH_STATUS {
-  LOADING = 'LOADING',
-  NOT_LOGGED_IN = 'NOT_LOGGED_IN',
-  LOGGED_IN = 'LOGGED_IN',
-}

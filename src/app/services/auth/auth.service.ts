@@ -1,57 +1,27 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {Apollo} from 'apollo-angular';
-
-import {BaseAuthService} from '../../bases/base-auth.service';
-import {AppState} from '../../ngrx/app-state';
-import {AUTH_STATUS} from '../../enums/auth-status.enum';
-import {User} from '../../interfaces/user.interface';
-import gql from 'graphql-tag';
-import {SetCurrentUser} from '../../ngrx/actions/current-user.actions';
+import {User, USER_ROLE} from '../../interfaces/user.interface';
 import {DocumentNode} from 'graphql';
-import {HttpClient} from '@angular/common/http';
-import {BASE_URL} from '../../../environments/environment';
-import {first} from 'rxjs/operators';
+import {filter, map, take, withLatestFrom} from 'rxjs/operators';
+import {ApolloService} from '../apollo/apollo.service';
+import * as fromRoot from '../../ngrx/index';
+import * as _authActions from '../../ngrx/actions/auth.actions';
+import {Observable} from 'rxjs';
+import {accessTokenKey} from '../../constants';
+import {gql} from '@apollo/client/core';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService extends BaseAuthService {
+export class AuthService extends ApolloService {
   constructor(
     protected apollo: Apollo,
-    protected store: Store<AppState>,
-    private http: HttpClient
+    private store: Store<fromRoot.State>
   ) {
-    super(apollo, store);
+    super(apollo);
   }
 
-  /*
-   * @param token (string)
-   * @returns void
-   */
-  public async verifyToken(token: string): Promise<boolean> {
-    return new Promise<boolean>(resolve => {
-      this.http.post(`${BASE_URL}/auth/verify`, {
-        token
-      }).pipe(
-        first()
-      ).subscribe((result: boolean) => {
-        if (result) {
-          this.token = token;
-          this.publishStatus(AUTH_STATUS.LOGGED_IN);
-          resolve(true);
-        } else {
-          localStorage.clear();
-          this.publishStatus(AUTH_STATUS.NOT_LOGGED_IN);
-          resolve(false);
-        }
-      });
-    });
-  }
-
-  /*
-   * @returns Promise<User>
-   */
   public async fetchUser(): Promise<User> {
     const query: DocumentNode = gql`
       query {
@@ -73,9 +43,54 @@ export class AuthService extends BaseAuthService {
         }
       }
     `;
-    const {user} = await this.Query(query);
-    const currentUser: User = user;
-    this.store.dispatch(new SetCurrentUser(currentUser));
-    return currentUser;
+    try {
+      const {user} = await this.Query(query);
+      return user;
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  public signOut(): void {
+    localStorage.removeItem(accessTokenKey);
+    this.store.dispatch(new _authActions.CurrentUser(null));
+  }
+
+  private get getAuth(): Observable<[boolean, User]> {
+    return this.store.select(fromRoot.getAuthUserLoading).pipe(
+      filter(loading => !loading),
+      withLatestFrom(this.store.select(fromRoot.getAuthUser)),
+      take(1),
+    );
+  }
+
+  public get isLoggedIn(): Observable<boolean> {
+    return this.getAuth.pipe(
+      map(([_, user]: [boolean, User]) => !!(user && user.email))
+    );
+  }
+
+  public get isAdmin(): Observable<boolean> {
+    return this.getAuth.pipe(
+      map(([_, user]: [boolean, User]) => !!(user && user.role === USER_ROLE.ADMIN))
+    );
+  }
+
+  public get isSchoolAdmin(): Observable<boolean> {
+    return this.getAuth.pipe(
+      map(([_, user]: [boolean, User]) => !!(user && user.role === USER_ROLE.SCHOOL_ADMIN))
+    );
+  }
+
+  public get isTeacher(): Observable<boolean> {
+    return this.getAuth.pipe(
+      map(([_, user]: [boolean, User]) => !!(user && user.role === USER_ROLE.TEACHER))
+    );
+  }
+
+  public get isStudent(): Observable<boolean> {
+    return this.getAuth.pipe(
+      map(([_, user]: [boolean, User]) => !!(user && user.role === USER_ROLE.STUDENT))
+    );
   }
 }

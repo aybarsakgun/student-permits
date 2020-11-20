@@ -1,21 +1,24 @@
-import { schoolDef, school } from './school/school.query';
-import { classDef, Class } from './class/class.query';
-import {userDef, user} from "./user/user.query";
+import {school, schoolDef} from './school/school.query';
+import {Class, classDef} from './class/class.query';
+import {user, userDef} from "./user/user.query";
+import {config, configDef} from "./core/config/config.query";
 
 const defs = [
-	schoolDef,
-	classDef,
-  userDef
+  schoolDef,
+  classDef,
+  userDef,
+  configDef
 ];
 
 export const QueryDef = defs.length > 0 ? `
 	type Query {
-		${ defs.join('\n\t\t') }
+		${defs.join('\n\t\t')}
 	}
 ` : '';
 
 export const Query = defs.length > 0 ? {
-	school,
-	Class,
-  user
+  school,
+  Class,
+  user,
+  config
 } : null;

@@ -1,30 +1,44 @@
 import {Injectable} from '@angular/core';
 import {CanActivate, Router} from '@angular/router';
-
 import {AuthService} from '../../../services/auth/auth.service';
-import {AUTH_STATUS} from '../../../enums/auth-status.enum';
+import {Observable, of} from 'rxjs';
+import {catchError, filter, map, switchMap, take, withLatestFrom} from 'rxjs/operators';
+import {Store} from '@ngrx/store';
+import * as fromRoot from '../../../ngrx';
+import {Config} from '../../../interfaces/config.interface';
 
 @Injectable()
 export class ClientGuard implements CanActivate {
-  constructor(private router: Router, private auth: AuthService) {
+  constructor(private router: Router, private authService: AuthService, private store: Store<fromRoot.State>) {
   }
 
-  /**
-   * @returns Promise<boolean>
-   */
-  public canActivate(): Promise<boolean> {
-    return new Promise((resolve: (result: boolean) => void) => {
-      this.auth.status$.subscribe((status: AUTH_STATUS) => {
-        switch (status) {
-          case AUTH_STATUS.LOADING:
-            break;
-          case AUTH_STATUS.NOT_LOGGED_IN:
-            this.router.navigateByUrl('/sign-in');
-            return resolve(false);
-          case AUTH_STATUS.LOGGED_IN:
-            return resolve(true);
+  public canActivate(): Observable<boolean> {
+    console.log('client guard');
+    return this.authService.isLoggedIn.pipe(
+      take(1),
+      switchMap((status: boolean) => {
+        if (!status) {
+          this.router.navigateByUrl('/auth/sign-in');
+          return of(false);
         }
-      });
-    });
+        return this.store.select(fromRoot.getConfigsLoading).pipe(
+          filter(loading => !loading),
+          withLatestFrom(this.store.select(fromRoot.getConfigs)),
+          take(1),
+          map(([_, config]: [boolean, Config]) => !!(config)),
+          switchMap((config: boolean) => {
+            if (config) {
+              return of(true);
+            }
+            this.router.navigateByUrl('/error');
+            return of(false);
+          })
+        );
+      }),
+      catchError(() => {
+        this.router.navigateByUrl('/auth/sign-in');
+        return of(false);
+      })
+    );
   }
 }

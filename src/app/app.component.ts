@@ -1,58 +1,38 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AUTH_STATUS} from './enums/auth-status.enum';
-import {Subscription} from 'rxjs';
-import {User} from './interfaces/user.interface';
-import {AuthService} from './services/auth/auth.service';
+import {Component} from '@angular/core';
 import {Router} from '@angular/router';
+import {Store} from '@ngrx/store';
+import * as fromRoot from './ngrx/index';
+import * as _authActions from './ngrx/actions/auth.actions';
+import * as _coreActions from './ngrx/actions/core.actions';
+import {take} from 'rxjs/operators';
+import {accessTokenKey} from './constants';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
-  public authStatus: AUTH_STATUS = AUTH_STATUS.LOADING;
-  public currentUser: User = null;
-
-  private subscriptions: Subscription[] = [];
-
-  public authStatuses = AUTH_STATUS;
-
+export class AppComponent {
   constructor(
-    private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private store: Store<fromRoot.State>
   ) {
-  }
-
-  /**
-   * @returns void
-   */
-  public ngOnInit(): void {
-    try {
-      this.subscriptions.push(this.auth.currentUser$.subscribe(async (currentUser: User) => {
-        this.currentUser = currentUser ? currentUser : this.auth.token ? await this.auth.fetchUser() : null;
-      }));
-      this.subscriptions.push(this.auth.status$.subscribe((status: AUTH_STATUS) => this.authStatus = status));
-    } catch (err) {
-      console.warn('[ERROR] AppComponent.ngOnInit:', err);
-    }
-  }
-
-  /**
-   * @returns void
-   */
-  public ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  /**
-   * @returns void
-   */
-  public signOut(): void {
-    this.auth.signOut();
-  }
-
-  public navigate(): void {
-    this.router.navigate(['/asdsada']);
+    this.store.select(fromRoot.getAuthUser).pipe(
+      take(1)
+    ).subscribe(user => {
+      const accessToken: string = localStorage.getItem(accessTokenKey);
+      if (!user && accessToken) {
+        this.store.dispatch(new _authActions.CurrentUser({
+          accessToken
+        }));
+        this.store.dispatch(new _authActions.GetUser());
+      } else if (!user && !accessToken) {
+        this.store.dispatch(new _authActions.GetUserFail());
+      }
+    });
+    this.store.select(fromRoot.getConfigs).pipe(
+      take(1)
+    ).subscribe(config => !config && this.store.dispatch(new _coreActions.GetConfigs()));
+    // this.store.select(fromRoot.getCore).subscribe(data => console.log(data));
   }
 }

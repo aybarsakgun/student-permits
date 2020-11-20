@@ -25,18 +25,9 @@ router.get(
   passport.authenticate('google', {
     session: false
   }), (req, res) => {
-    res.redirect(`${process.env.BASE_URL}:${process.env.CLIENT_PORT}/sign-in?token=` + req.user.generateJWT());
+    res.redirect(`${process.env.BASE_URL}:${process.env.CLIENT_PORT}/auth/sign-in?accessToken=` + req.user.generateJWT());
   }
 );
-
-router.post('/verify', async (req, res) => {
-  try {
-    const verify = await authenticate('Bearer ' + req.body.token);
-    res.send(!!verify);
-  } catch (e) {
-    res.send(false);
-  }
-});
 
 router.get('/google/fail', (req, res) => {
   res.send({error: 'sisteme kayıtın yok.'});
