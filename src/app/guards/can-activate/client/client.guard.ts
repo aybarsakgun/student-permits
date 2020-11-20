@@ -13,7 +13,6 @@ export class ClientGuard implements CanActivate {
   }
 
   public canActivate(): Observable<boolean> {
-    console.log('client guard');
     return this.authService.isLoggedIn.pipe(
       take(1),
       switchMap((status: boolean) => {

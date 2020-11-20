@@ -13,9 +13,10 @@ const checkUser = (user) => {
 
 passport.use(
   new passportGoogle.Strategy({
-      callbackURL: `${ process.env.BASE_URL }:${ process.env.PORT }/auth/google/callback`,
+      callbackURL: process.env.DEV_ENV ? `${ process.env.BASE_URL }:${ process.env.PORT }/auth/google/callback` : `${ process.env.BASE_URL }/auth/google/callback`,
       clientID: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET
+      clientSecret: process.env.CLIENT_SECRET,
+      proxy: !process.env.DEV_ENV
     },
     async function (accessToken, refreshToken, profile, done) {
       try {
