@@ -3,7 +3,6 @@ import {Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import * as fromRoot from './ngrx/index';
 import * as _authActions from './ngrx/actions/auth.actions';
-import * as _coreActions from './ngrx/actions/core.actions';
 import {take} from 'rxjs/operators';
 import {accessTokenKey} from './constants';
 
@@ -30,9 +29,6 @@ export class AppComponent {
         this.store.dispatch(new _authActions.GetUserFail());
       }
     });
-    this.store.select(fromRoot.getConfigs).pipe(
-      take(1)
-    ).subscribe(config => !config && this.store.dispatch(new _coreActions.GetConfigs()));
     // this.store.select(fromRoot.getCore).subscribe(data => console.log(data));
   }
 }
