@@ -5,11 +5,12 @@
     "ng": "ng",
     "frontend": "ng serve --port 5000 --open --host 0.0.0.0",
     "backend": "nodemon --exec babel-node server/index.js",
-    "start": "ng serve",
+    "start": "nodemon --exec babel-node server/index.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "heroku-postbuild": "ng build"
   },
   "private": true,
   "dependencies": {
