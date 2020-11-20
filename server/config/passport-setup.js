@@ -27,6 +27,9 @@ passport.use(
       // } catch (error) {
       //   done(error);
       // }
-      done(null, {test: true});
+      const user = await User.findOne({email: profile.emails[0].value});
+      if (checkUser(user)) {
+        done(null, user);
+      }
     })
 );
