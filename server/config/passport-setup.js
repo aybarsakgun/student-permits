@@ -15,21 +15,18 @@ passport.use(
   new passportGoogle.Strategy({
       callbackURL: process.env.DEV_ENV === 'true' ? `${ process.env.BASE_URL }:${ process.env.PORT }/auth/google/callback` : `${ process.env.BASE_URL }/auth/google/callback`,
       clientID: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET
+      clientSecret: process.env.CLIENT_SECRET,
+      proxy: true
     },
     async function (accessToken, refreshToken, profile, done) {
-      // try {
-      //   const email = profile.emails[0].value;
-      //   const user = await User.findOne({email: email});
-      //   if (checkUser(user)) {
-      //     done(null, user);
-      //   }
-      // } catch (error) {
-      //   done(error);
-      // }
-      const user = await User.findOne({email: profile.emails[0].value});
-      if (checkUser(user)) {
-        done(null, user);
+      try {
+        const email = profile.emails[0].value;
+        const user = await User.findOne({email: email});
+        if (checkUser(user)) {
+          return done(null, user);
+        }
+      } catch (error) {
+        return done(error);
       }
     })
 );
