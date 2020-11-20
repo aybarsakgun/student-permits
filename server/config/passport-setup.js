@@ -15,7 +15,8 @@ passport.use(
   new passportGoogle.Strategy({
       callbackURL: process.env.DEV_ENV === 'true' ? `${ process.env.BASE_URL }:${ process.env.PORT }/auth/google/callback` : `${ process.env.BASE_URL }/auth/google/callback`,
       clientID: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET
+      clientSecret: process.env.CLIENT_SECRET,
+      passReqToCallback: process.env.DEV_ENV === 'false'
     },
     async function (accessToken, refreshToken, profile, done) {
       try {
