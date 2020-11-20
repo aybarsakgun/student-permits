@@ -4,14 +4,12 @@
   "scripts": {
     "ng": "ng",
     "frontend-dev": "ng serve --port 5000 --open --host 0.0.0.0",
-    "frontend": "ng serve --port 5000 --open --host",
-    "backend-dev": "nodemon --exec babel-node server/index.js",
+    "backend-dev": "NODE_ENV=development nodemon --exec babel-node server/index.js",
     "start": "babel-node server/index.js",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "heroku-postbuild": "ng build --prod"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
