@@ -22,7 +22,9 @@ export abstract class ApolloService {
           } else {
             resolve(data);
           }
-        }, (err: Error) => reject(err));
+        }, (error: Error) => {
+          reject(error.message);
+        });
     });
   }
 
@@ -39,7 +41,9 @@ export abstract class ApolloService {
           } else {
             resolve(data);
           }
-        }, (err: Error) => reject(err));
+        }, (error: Error) => {
+          reject(error.message);
+        });
     });
   }
 

@@ -12,14 +12,15 @@ import {map} from 'rxjs/operators';
 })
 export class NavContentComponent {
 
-  public navigation$: Observable<NavigationItem[]> = null;
+  public navigationItems$: Observable<NavigationItem[]> = this.store.select(fromRoot.getCoreConfig).pipe(
+    map((config) => config && config.navigationItems)
+  );
 
   @Output() onNavMobCollapse = new EventEmitter();
 
   constructor(
     private store: Store<fromRoot.State>
   ) {
-    this.navigation$ = this.store.select(fromRoot.getConfigs).pipe(map((config) => config.navigation));
   }
 
   navMob(): void {

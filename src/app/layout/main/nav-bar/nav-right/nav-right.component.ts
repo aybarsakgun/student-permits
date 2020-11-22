@@ -4,9 +4,9 @@ import {animate, style, transition, trigger} from '@angular/animations';
 import {Observable} from 'rxjs';
 import {User} from '../../../../interfaces/user.interface';
 import * as fromRoot from '../../../../ngrx/index';
+import * as _coreActions from '../../../../ngrx/actions/core.actions';
 import {Router} from '@angular/router';
 import {Store} from '@ngrx/store';
-import {AuthService} from '../../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-nav-right',
@@ -38,14 +38,12 @@ export class NavRightComponent {
   public visibleUserList = false;
   public chatMessage = false;
   public friendId: number;
-  public currentUser$: Observable<User> = null;
+  public user$: Observable<User> = this.store.select(fromRoot.getCoreUser);
 
   constructor(
     private router: Router,
-    private store: Store<fromRoot.State>,
-    private authService: AuthService
+    private store: Store<fromRoot.State>
   ) {
-    this.currentUser$ = this.store.select(fromRoot.getAuthUser);
   }
 
   onChatToggle(friendID): void {
@@ -54,7 +52,6 @@ export class NavRightComponent {
   }
 
   public signOut(): void {
-    this.authService.signOut();
-    this.router.navigateByUrl('/auth/sign-in');
+    this.store.dispatch(new _coreActions.Logout());
   }
 }

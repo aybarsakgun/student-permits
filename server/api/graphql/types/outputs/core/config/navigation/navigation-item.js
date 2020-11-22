@@ -1,8 +1,8 @@
-export const NavigationType = `
-	type Navigation {
+export const NavigationItemType = `
+	type NavigationItem {
 		id: String!
 		title: String!
-		type: NavigationTypeEnum!
+		type: NavigationItemTypeEnum!
 		translate: String
 		icon: String,
 		hidden: Boolean
@@ -14,6 +14,6 @@ export const NavigationType = `
 		breadcrumbs: Boolean
 		function: String
 		badge: Badge
-		children: [Navigation]
+		children: [NavigationItem]
 	}
 `;

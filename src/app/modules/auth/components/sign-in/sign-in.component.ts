@@ -2,12 +2,12 @@ import {Component} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {BASE_URL} from '../../../../../environments/environment';
-import * as _authActions from '../../../../ngrx/actions/auth.actions';
+import * as _coreActions from '../../../../ngrx/actions/core.actions';
 import * as fromRoot from '../../../../ngrx/index';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
-import {User} from '../../../../interfaces/user.interface';
-import {appName} from '../../../../constants';
+import {accessTokenKey, appName} from '../../../../constants';
+import {CoreService} from '../../../../services/core/core.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -15,24 +15,21 @@ import {appName} from '../../../../constants';
   styleUrls: ['./sign-in.component.scss']
 })
 export class SignInComponent {
-  public currentUser$: Observable<User> = null;
+  public loggingIn$: Observable<boolean> = this.store.select(fromRoot.getCoreLoading);
+  public errors$: Observable<string[]> = this.store.select(fromRoot.getCoreErrors);
+  public appName = appName;
 
   constructor(
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private coreService: CoreService,
     private store: Store<fromRoot.State>
   ) {
     this.titleService.setTitle('Sign In - ' + appName);
     const queryParams: ParamMap = this.activatedRoute.snapshot.queryParamMap;
-    if (queryParams.has('accessToken')) {
-      this.currentUser$ = this.store.select(fromRoot.getAuthUser);
-      const accessToken: string = queryParams.get('accessToken');
-      this.store.dispatch(new _authActions.CurrentUser({
-        accessToken
-      }));
-      this.store.dispatch(new _authActions.GetUser());
-      this.router.navigateByUrl('/dashboard');
+    if (queryParams.has(accessTokenKey)) {
+      this.store.dispatch(new _coreActions.SetAccessToken(queryParams.get(accessTokenKey)));
     }
   }
 

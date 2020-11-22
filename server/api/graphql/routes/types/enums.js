@@ -1,7 +1,7 @@
 import {UserRoleEnum} from '../../types/enums/user/user-role';
-import {NavigationTypeEnum} from "../../types/enums/core/config/navigation/navigation-type";
+import {NavigationItemTypeEnum} from "../../types/enums/core/config/navigation/navigation-item-type";
 
 export const EnumDef = [
   UserRoleEnum,
-  NavigationTypeEnum
+  NavigationItemTypeEnum
 ].join('\n');

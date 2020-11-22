@@ -1,7 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
-import {AuthService} from './services/auth/auth.service';
 import {PublicGuard} from './guards/can-activate/public/public.guard';
 import {ClientGuard} from './guards/can-activate/client/client.guard';
 import {AppRoutingModule} from './app-routing.module';
@@ -27,10 +26,9 @@ import {NotFoundComponent} from './layout/not-found/not-found.component';
 import {StoreModule} from '@ngrx/store';
 import {reducers} from './ngrx';
 import {EffectsModule} from '@ngrx/effects';
-import {AuthEffects} from './ngrx/effects/auth.effects';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
-import {ConfigService} from './services/core/config/config.service';
+import {CoreService} from './services/core/core.service';
 import {CoreEffects} from './ngrx/effects/core.effects';
 
 @NgModule({
@@ -58,18 +56,18 @@ import {CoreEffects} from './ngrx/effects/core.effects';
     BrowserAnimationsModule,
     ApolloModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AuthEffects, CoreEffects]),
-    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    EffectsModule.forRoot([CoreEffects]),
+    // !environment.production ? StoreDevtoolsModule.instrument() : [],
+    StoreDevtoolsModule.instrument(),
     SharedModule,
     NgbDropdownModule,
     NgbTooltipModule,
     NgbButtonsModule
   ],
   providers: [
-    AuthService,
     PublicGuard,
     ClientGuard,
-    ConfigService
+    CoreService
   ],
   bootstrap: [
     AppComponent

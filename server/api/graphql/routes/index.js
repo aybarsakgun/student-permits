@@ -55,7 +55,9 @@ export function setGraphQLClientAPI(app, server, path) {
 	 */
 	function formatError(err) {
 		console.error('ERROR: [graphql]:', err);
-		return err.message || err;
+		return {
+		  message: err.message
+    };
 	}
 
 	const apolloServer = new ApolloServer({ typeDefs, resolvers, context, subscriptions, formatError });

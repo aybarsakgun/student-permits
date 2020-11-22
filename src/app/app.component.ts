@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import * as fromRoot from './ngrx/index';
-import * as _authActions from './ngrx/actions/auth.actions';
-import {take} from 'rxjs/operators';
-import {accessTokenKey} from './constants';
+import * as _coreActions from './ngrx/actions/core.actions';
+import {CoreService} from './services/core/core.service';
 
 @Component({
   selector: 'app-root',
@@ -14,21 +13,13 @@ import {accessTokenKey} from './constants';
 export class AppComponent {
   constructor(
     private router: Router,
-    private store: Store<fromRoot.State>
+    private activatedRoute: ActivatedRoute,
+    private store: Store<fromRoot.State>,
+    private coreService: CoreService
   ) {
-    this.store.select(fromRoot.getAuthUser).pipe(
-      take(1)
-    ).subscribe(user => {
-      const accessToken: string = localStorage.getItem(accessTokenKey);
-      if (!user && accessToken) {
-        this.store.dispatch(new _authActions.CurrentUser({
-          accessToken
-        }));
-        this.store.dispatch(new _authActions.GetUser());
-      } else if (!user && !accessToken) {
-        this.store.dispatch(new _authActions.GetUserFail());
-      }
-    });
-    // this.store.select(fromRoot.getCore).subscribe(data => console.log(data));
+    const accessToken = this.coreService.getAccessToken();
+    if (accessToken) {
+      this.store.dispatch(new _coreActions.SetAccessToken(accessToken));
+    }
   }
 }

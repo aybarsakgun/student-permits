@@ -1,16 +1,14 @@
 import {NgModule} from '@angular/core';
-import {HttpClientModule, HttpHeaders} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 import {Apollo} from 'apollo-angular';
 import {HttpLink, HttpLinkModule} from 'apollo-angular-link-http';
 import {InMemoryCache} from 'apollo-cache-inmemory';
 import {getMainDefinition} from 'apollo-utilities';
-import {setContext} from 'apollo-link-context';
 import {WebSocketLink} from 'apollo-link-ws';
 import {ApolloLink, split} from 'apollo-link';
-import {accessTokenKey, GRAPHQL_URL, WS_GRAPHQL_URL} from '../constants';
-import {Store} from '@ngrx/store';
-import * as fromRoot from '../ngrx/index';
-import {filter, take} from 'rxjs/operators';
+import {GRAPHQL_URL, WS_GRAPHQL_URL} from '../constants';
+import {onError} from '@apollo/client/link/error';
+import {CoreService} from '../services/core/core.service';
 
 @NgModule({
   imports: [
@@ -25,19 +23,9 @@ export class ApolloModule {
   constructor(
     private apollo: Apollo,
     private httpLink: HttpLink,
-    private store: Store<fromRoot.State>
+    private coreService: CoreService
   ) {
     this.createApolloClient();
-    this.store.select(fromRoot.getAuthUser).pipe(
-      filter(user => !!(user && user.accessToken)),
-      take(1)
-    ).subscribe(user => {
-      localStorage.setItem(accessTokenKey, user.accessToken);
-      const apolloClient = this.apollo.default().client;
-      if (apolloClient) {
-        apolloClient.setLink(this.createApolloLink() as any);
-      }
-    });
   }
 
   private createApolloClient(): void {
@@ -49,36 +37,56 @@ export class ApolloModule {
   }
 
   private createApolloLink(): ApolloLink {
-    const accessToken: string = localStorage.getItem(accessTokenKey);
-    const ws = new WebSocketLink({
+    const httpLink = this.httpLink.create({
+      uri: GRAPHQL_URL
+    });
+
+    const wsLink = new WebSocketLink({
       uri: WS_GRAPHQL_URL,
       options: {
         connectionParams: {
-          authorization: `Bearer ${accessToken}`
+          authorization: `Bearer ${this.coreService.accessToken.value}`
         },
         reconnect: true
       }
     });
 
-    const http = setContext((_, {
-      headers
-    }) => {
-      if (!headers) {
-        headers = new HttpHeaders();
-      }
-      if (accessToken) {
-        headers = headers.append('authorization', `Bearer ${accessToken}`);
-      }
-      return {
-        headers
-      };
-    }).concat(this.httpLink.create({
-      uri: GRAPHQL_URL
-    }));
+    const terminatingLink = split(
+      ({query}) => {
+        const def = getMainDefinition(query);
+        return def.kind === 'OperationDefinition' && def.operation === 'subscription';
+      },
+      wsLink,
+      httpLink
+    );
 
-    return split(({query}) => {
-      const res = getMainDefinition(query);
-      return res.kind === 'OperationDefinition' && res.operation === 'subscription';
-    }, ws, http);
+    const authLink = new ApolloLink((operation, forward) => {
+      operation.setContext(({headers = {}, accessToken = this.coreService.accessToken.value}: any) => {
+        if (accessToken) {
+          headers['authorization'] = `Bearer ${accessToken}`;
+        }
+        return {
+          headers
+        };
+      });
+      return forward(operation);
+    });
+
+    const errorLink = onError(({graphQLErrors, networkError}) => {
+      if (graphQLErrors) {
+        graphQLErrors.forEach((error) => {
+          const errorMessage: string = error.message;
+          console.warn(`graphqlError: ${errorMessage}`);
+        });
+      }
+      if (networkError) {
+        console.warn('networkError: ', networkError);
+        if (networkError['error'].errors && networkError['error'].errors.length) {
+          networkError.message = networkError['error'].errors.map(error => (error.message));
+        }
+      }
+    });
+
+    return ApolloLink.from([authLink, errorLink as any, terminatingLink]);
   }
 }

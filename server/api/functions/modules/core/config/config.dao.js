@@ -11,7 +11,7 @@ export async function ConfigGet(contextUser) {
   const userClasses = await getUserClasses(findUser);
 
   return {
-    navigation: [
+    navigationItems: [
       {
         id: 'navigation',
         title: 'Navigation',

@@ -1,7 +1,8 @@
-<ul class="navbar-nav ml-auto" *ngIf="currentUser$ | async as user">
+<ul class="navbar-nav ml-auto" *ngIf="user$ | async as user">
   <li>
     <div class="dropdown" ngbDropdown placement="auto">
-      <a ngbDropdownToggle href="javascript:"><i class="icon feather icon-bell"></i><span class="badge bg-danger"><span class="sr-only"></span></span></a>
+      <a ngbDropdownToggle href="javascript:"><i class="icon feather icon-bell"></i><span class="badge bg-danger"><span
+        class="sr-only"></span></span></a>
       <div ngbDropdownMenu class="dropdown-menu dropdown-menu-right notification">
         <div class="noti-head">
           <h6 class="d-inline-block m-b-0">Notifications</h6>
@@ -18,7 +19,8 @@
             <div class="media">
               <img class="img-radius" src="assets/images/user/avatar-1.jpg" alt="Generic placeholder image">
               <div class="media-body">
-                <p><strong>John Doe</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>30 min</span></p>
+                <p><strong>John Doe</strong><span class="n-time text-muted"><i
+                  class="icon feather icon-clock m-r-10"></i>30 min</span></p>
                 <p>New ticket Added</p>
               </div>
             </div>
@@ -30,7 +32,8 @@
             <div class="media">
               <img class="img-radius" src="assets/images/user/avatar-2.jpg" alt="Generic placeholder image">
               <div class="media-body">
-                <p><strong>Joseph William</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>30 min</span></p>
+                <p><strong>Joseph William</strong><span class="n-time text-muted"><i
+                  class="icon feather icon-clock m-r-10"></i>30 min</span></p>
                 <p>Purchase New Theme and make payment</p>
               </div>
             </div>
@@ -39,7 +42,8 @@
             <div class="media">
               <img class="img-radius" src="assets/images/user/avatar-3.jpg" alt="Generic placeholder image">
               <div class="media-body">
-                <p><strong>Sara Soudein</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>30 min</span></p>
+                <p><strong>Sara Soudein</strong><span class="n-time text-muted"><i
+                  class="icon feather icon-clock m-r-10"></i>30 min</span></p>
                 <p>currently login</p>
               </div>
             </div>
@@ -82,7 +86,8 @@
 </ul>
 
 <section class="header-user-list" *ngIf="visibleUserList" [ngClass]="{'open': visibleUserList}" [@slideInOutLeft]>
-  <app-chat-user-list (onChatToggle)="onChatToggle($event)" (onChatCollapse)="visibleUserList = !visibleUserList; chatMessage = false;"></app-chat-user-list>
+  <app-chat-user-list (onChatToggle)="onChatToggle($event)"
+                      (onChatCollapse)="visibleUserList = !visibleUserList; chatMessage = false;"></app-chat-user-list>
 </section>
 
 <section class="header-chat" *ngIf="chatMessage" [ngClass]="{'open': chatMessage}" [@slideInOutLeft]>

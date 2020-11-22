@@ -1,27 +1,28 @@
 import {Injectable} from '@angular/core';
 import {CanActivate, Router} from '@angular/router';
-import {AuthService} from '../../../services/auth/auth.service';
 import {Observable, of} from 'rxjs';
-import {catchError, switchMap, take} from 'rxjs/operators';
+import {filter, switchMap, take} from 'rxjs/operators';
+import {Store} from '@ngrx/store';
+import * as fromRoot from '../../../ngrx';
 
 @Injectable()
 export class PublicGuard implements CanActivate {
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(
+    private router: Router,
+    private store: Store<fromRoot.State>
+  ) {
   }
 
   public canActivate(): Observable<boolean> {
-    return this.authService.isLoggedIn.pipe(
+    return this.store.select(fromRoot.getCore).pipe(
+      filter((core) => !core.loading),
       take(1),
-      switchMap((status: boolean) => {
-        if (status) {
+      switchMap((core) => {
+        if (core.user && core.config) {
           this.router.navigateByUrl('/dashboard');
           return of(false);
         }
         return of(true);
-      }),
-      catchError(() => {
-        this.router.navigateByUrl('/dashboard');
-        return of(false);
       })
     );
   }
