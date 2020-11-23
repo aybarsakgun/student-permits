@@ -16,7 +16,9 @@ export class CoreEffects {
     switchMap(() => this.coreService.fetchCore()),
     map((result) => {
       if (result.user && result.config) {
-        this.router.navigateByUrl('/dashboard');
+        if (this.router.url.startsWith('/auth/sign-in')) {
+          this.router.navigateByUrl('/dashboard');
+        }
         return new _coreActions.FetchingCoreSuccess(result);
       }
     }),

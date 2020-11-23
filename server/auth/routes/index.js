@@ -3,6 +3,7 @@ import {Router} from 'express';
 import passport from 'passport';
 
 const router = Router();
+const origin = process.env.DEV_ENV === 'true' ? `${ process.env.BASE_URL }:${ process.env.CLIENT_PORT }` : `${ process.env.BASE_URL }`;
 
 if (process.env.DEV_ENV !== 'true') {
   const ddos = new DDOS();
@@ -22,15 +23,11 @@ router.get(
 router.get(
   '/google/callback',
   passport.authenticate('google', {
-    session: false
+    session: false,
+    failureRedirect: `${origin}/auth/sign-in?accessToken=`
   }), (req, res) => {
-    const origin = process.env.DEV_ENV === 'true' ? `${ process.env.BASE_URL }:${ process.env.CLIENT_PORT }` : `${ process.env.BASE_URL }`;
     res.redirect(`${origin}/auth/sign-in?accessToken=` + req.user.generateJWT());
   }
 );
-
-router.get('/google/fail', (req, res) => {
-  res.send({error: 'sisteme kayıtın yok.'});
-});
 
 export default router;

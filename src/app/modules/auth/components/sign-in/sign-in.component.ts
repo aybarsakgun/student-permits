@@ -29,7 +29,15 @@ export class SignInComponent {
     this.titleService.setTitle('Sign In - ' + appName);
     const queryParams: ParamMap = this.activatedRoute.snapshot.queryParamMap;
     if (queryParams.has(accessTokenKey)) {
-      this.store.dispatch(new _coreActions.SetAccessToken(queryParams.get(accessTokenKey)));
+      const accessToken = queryParams.get(accessTokenKey);
+      const accessTokenType = atob(accessToken.split('.')[0]);
+      if (accessTokenType && accessTokenType.includes('JWT')) {
+        this.store.dispatch(new _coreActions.SetAccessToken(accessToken));
+      } else {
+        this.store.dispatch(new _coreActions.FetchingCoreFail({
+          errors: ['The e-mail address you signed in is not registered in our system.']
+        }));
+      }
     }
   }
 

@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HttpHeaders} from '@angular/common/http';
 import {Apollo} from 'apollo-angular';
 import {HttpLink, HttpLinkModule} from 'apollo-angular-link-http';
 import {InMemoryCache} from 'apollo-cache-inmemory';
@@ -61,9 +61,9 @@ export class ApolloModule {
     );
 
     const authLink = new ApolloLink((operation, forward) => {
-      operation.setContext(({headers = {}, accessToken = this.coreService.accessToken.value}: any) => {
+      operation.setContext(({headers = new HttpHeaders(), accessToken = this.coreService.accessToken.value}: any) => {
         if (accessToken) {
-          headers['authorization'] = `Bearer ${accessToken}`;
+          headers = headers.append('authorization', `Bearer ${accessToken}`);
         }
         return {
           headers

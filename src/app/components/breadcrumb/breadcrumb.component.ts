@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {NavigationEnd, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 import {NavigationItem, NavigationItems} from '../../layout/main/navigation/navigation';
 import {appName} from '../../constants';
@@ -36,11 +36,13 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
 
   private setBreadcrumb(): void {
     let routerUrl: string;
-    this.routerEvents$ = this.route.events.subscribe((router: any) => {
-      routerUrl = router.urlAfterRedirects;
-      if (routerUrl && typeof routerUrl === 'string') {
-        const activeLink = router.url;
-        this.filterNavigation(activeLink);
+    this.routerEvents$ = this.route.events.subscribe((router) => {
+      if (router instanceof NavigationEnd) {
+        routerUrl = router.urlAfterRedirects;
+        if (routerUrl && typeof routerUrl === 'string') {
+          const activeLink = router.url;
+          this.filterNavigation(activeLink);
+        }
       }
     });
   }
