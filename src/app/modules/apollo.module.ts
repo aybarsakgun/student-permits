@@ -32,7 +32,17 @@ export class ApolloModule {
     const cache: any = new InMemoryCache();
     this.apollo.create({
       link: this.createApolloLink() as any,
-      cache
+      cache,
+      defaultOptions: {
+        watchQuery: {
+          fetchPolicy: 'network-only',
+          errorPolicy: 'ignore',
+        },
+        query: {
+          fetchPolicy: 'network-only',
+          errorPolicy: 'all',
+        }
+      },
     });
   }
 

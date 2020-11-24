@@ -1,9 +1,12 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
-import {NavigationItem, NavigationItems} from '../../layout/main/navigation/navigation';
+import {NavigationItem} from '../../layout/main/navigation/navigation';
 import {appName} from '../../constants';
 import {Subscription} from 'rxjs';
+import {Store} from '@ngrx/store';
+import * as fromRoot from '../../ngrx';
+import {take, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-breadcrumb',
@@ -12,17 +15,24 @@ import {Subscription} from 'rxjs';
 })
 export class BreadcrumbComponent implements OnInit, OnDestroy {
   private routerEvents$: Subscription = null;
-  private navigation: NavigationItem[] = NavigationItems;
+  private navigationItems: NavigationItem[] = [];
   public navigationList: NavigationItem[] = [];
 
   constructor(
     private route: Router,
-    private titleService: Title
+    private titleService: Title,
+    private store: Store<fromRoot.State>
   ) {
     this.setBreadcrumb();
   }
 
   ngOnInit(): void {
+    this.store.select(fromRoot.getCoreConfig).pipe(
+      take(1),
+      tap((config) => {
+        this.navigationItems = config?.navigationItems;
+      })
+    ).subscribe();
     let routerUrl: string;
     routerUrl = this.route.url;
     if (routerUrl && typeof routerUrl === 'string') {
@@ -50,7 +60,7 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
   private filterNavigation(activeLink): void {
     let result = [];
     let title = 'Dashboard';
-    this.navigation.forEach((a) => {
+    this.navigationItems.forEach((a) => {
       if (a.type === 'item' && 'url' in a && a.url === activeLink) {
         result = [
           {
