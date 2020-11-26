@@ -1,6 +1,6 @@
 <ng-container *ngIf="!item.hidden">
   <li class="nav-item pcoded-hasmenu" [routerLinkActive]="['active']">
-    <a [routerLinkActive]="['active']" href="javascript:" class="nav-link" (click)="navCollapse($event)">
+    <a [routerLinkActive]="['active']" href="javascript:" class="nav-link" (click)="navCollapse($event)" id="collapse-nav">
       <ng-container *ngTemplateOutlet="itemContent"></ng-container>
     </a>
     <ng-container *ngTemplateOutlet="subMenuContent"></ng-container>

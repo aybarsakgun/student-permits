@@ -1,7 +1,28 @@
 <div class="row">
   <div class="col-sm-12">
-    <app-card cardTitle="Hello Card">
-      <p>class component {{ class?.name }}</p>
-    </app-card>
+    <h5>
+      Teachers
+      <button class="btn btn-primary btn-sm btn-round float-right">Manage This Class</button>
+    </h5>
+    <hr>
+    <div class="row">
+      <div class="col-lg-3 col-md-4 col-sm-12" *ngFor="let teacher of class.teachers">
+        <app-card [hidHeader]="true" [cardClass]="{'bg-primary': (user$ | async)?.id === teacher.id}" blockClass="text-center">
+          <img src="assets/images/user/avatar-4.jpg" class="img-radius " alt="User-Profile-Image">
+          <h4 class="m-t-20" [class.text-white]="(user$ | async)?.id === teacher.id">{{teacher.name + ' ' + teacher.lastName}}</h4>
+        </app-card>
+      </div>
+    </div>
+    <h5>Students</h5>
+    <hr>
+    <div class="row">
+      <div class="col-lg-3 col-md-4 col-sm-12" *ngFor="let student of class.students">
+        <app-card [hidHeader]="true" [cardClass]="{'bg-primary': (user$ | async)?.id === student.id}" blockClass="text-center">
+          <img src="assets/images/user/avatar-4.jpg" class="img-radius " alt="User-Profile-Image">
+          <h4 class="m-t-20" [class.text-white]="(user$ | async)?.id === student.id">{{student.name + ' ' + student.lastName}}</h4>
+          <button class="btn btn-primery btn-sm btn-round" *ngIf="(user$ | async)?.role !== userRoles.STUDENT">Manage</button>
+        </app-card>
+      </div>
+    </div>
   </div>
 </div>

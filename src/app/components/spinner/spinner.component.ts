@@ -17,7 +17,7 @@ export class SpinnerComponent implements OnDestroy {
   public isSpinnerVisible = true;
   public spinnerTypes = spinnerTypes;
   private routerEvents$: Subscription = null;
-  @Input() public backgroundColor = '#2196f3';
+  @Input() public backgroundColor = '#fff';
   @Input() public spinner = spinnerTypes.skLine;
 
   constructor(

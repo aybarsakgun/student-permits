@@ -16,7 +16,6 @@ export async function ConfigGet(contextUser) {
         id: 'navigation',
         title: 'Navigation',
         type: 'group',
-        icon: 'feather icon-monitor',
         children: [
           {
             id: 'dashboard',
@@ -39,7 +38,6 @@ export async function ConfigGet(contextUser) {
                 title: 'All Classes',
                 type: 'item',
                 url: '/classes',
-                icon: 'feather icon-layout',
                 breadcrumbs: true,
               }
             ].concat(userClasses.map(uC => ({
@@ -47,7 +45,6 @@ export async function ConfigGet(contextUser) {
               title: uC.name,
               type: 'item',
               url: '/classes/' + uC._id,
-              icon: 'feather icon-home',
               breadcrumbs: true
             })))
           }

@@ -1,6 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {NavigationItem} from '../../navigation';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-nav-collapse',
@@ -18,10 +19,16 @@ import {NavigationItem} from '../../navigation';
     ])
   ],
 })
-export class NavCollapseComponent {
+export class NavCollapseComponent implements AfterViewInit {
   @Input() item: NavigationItem;
 
-  constructor() {
+  constructor(private router: Router) {
+  }
+
+  ngAfterViewInit(): void {
+    if (this.router.url.includes(this.item.url)) {
+      document.getElementById('collapse-nav').click();
+    }
   }
 
   navCollapse(event): void {
