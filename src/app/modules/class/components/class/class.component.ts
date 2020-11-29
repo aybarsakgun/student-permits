@@ -6,6 +6,9 @@ import * as fromRoot from '../../../../ngrx';
 import {Observable} from 'rxjs';
 import {User, USER_ROLE} from '../../../../interfaces/user.interface';
 import {ResolverData} from '../../../../interfaces/resolver-data.interface';
+import {MatDialog} from '@angular/material/dialog';
+import {UserEditDialogComponent} from '../../../shared/user/user-edit-dialog/user-edit-dialog.component';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-class',
@@ -19,7 +22,8 @@ export class ClassComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private store: Store<fromRoot.State>
+    private store: Store<fromRoot.State>,
+    public dialog: MatDialog
   ) {
   }
 
@@ -29,4 +33,16 @@ export class ClassComponent implements OnInit {
     });
   }
 
+  editStudent(user: User): void {
+    this.dialog.open(UserEditDialogComponent, {
+      data: {
+        user
+      }
+    }).afterClosed().pipe(take(1)).subscribe((data: User) => {
+      const findStudent = this.class.students.findIndex(student => student.id === data.id);
+      if (findStudent !== -1) {
+        this.class.students[findStudent] = data;
+      }
+    });
+  }
 }

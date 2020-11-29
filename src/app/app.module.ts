@@ -30,6 +30,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import {CoreService} from './services/core/core.service';
 import {CoreEffects} from './ngrx/effects/core.effects';
+import {UserService} from './services/user/user.service';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import {CoreEffects} from './ngrx/effects/core.effects';
   providers: [
     PublicGuard,
     ClientGuard,
-    CoreService
+    CoreService,
+    UserService
   ],
   bootstrap: [
     AppComponent

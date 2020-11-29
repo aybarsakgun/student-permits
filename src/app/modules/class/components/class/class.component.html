@@ -20,7 +20,7 @@
         <app-card [hidHeader]="true" [cardClass]="{'bg-primary': (user$ | async)?.id === student.id}" blockClass="text-center">
           <img src="assets/images/user/avatar-4.jpg" class="img-radius " alt="User-Profile-Image">
           <h4 class="m-t-20" [class.text-white]="(user$ | async)?.id === student.id">{{student.name + ' ' + student.lastName}}</h4>
-          <button class="btn btn-primery btn-sm btn-round" *ngIf="(user$ | async)?.role !== userRoles.STUDENT">Manage</button>
+          <button class="btn btn-primery btn-sm btn-round" *ngIf="(user$ | async)?.role !== userRoles.STUDENT" (click)="editStudent(student)">Manage</button>
         </app-card>
       </div>
     </div>

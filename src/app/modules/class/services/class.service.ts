@@ -4,7 +4,6 @@ import {DocumentNode} from 'graphql';
 import {gql} from '@apollo/client/core';
 import {ApolloService} from '../../../services/apollo/apollo.service';
 import {Class as IClass} from '../../../interfaces/class.interface';
-import {Observable, of} from 'rxjs';
 
 @Injectable()
 export class ClassService extends ApolloService {

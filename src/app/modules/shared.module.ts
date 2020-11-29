@@ -10,6 +10,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ToastComponent} from '../components/toast/toast.component';
 import {PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {ClickOutsideModule} from 'ng-click-outside';
+import {UserEditDialogComponent} from './shared/user/user-edit-dialog/user-edit-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -25,11 +27,13 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CardModule,
     BreadcrumbModule,
     ModalModule,
+    MatDialogModule,
     ClickOutsideModule
   ],
   declarations: [
     SpinnerComponent,
     ToastComponent,
+    UserEditDialogComponent
   ],
   exports: [
     CommonModule,
