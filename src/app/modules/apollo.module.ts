@@ -36,7 +36,7 @@ export class ApolloModule {
       defaultOptions: {
         watchQuery: {
           fetchPolicy: 'network-only',
-          errorPolicy: 'ignore',
+          errorPolicy: 'all',
         },
         query: {
           fetchPolicy: 'network-only',
@@ -97,6 +97,6 @@ export class ApolloModule {
       }
     });
 
-    return ApolloLink.from([authLink, errorLink as any, terminatingLink]);
+    return ApolloLink.from([errorLink as any, authLink, terminatingLink]);
   }
 }

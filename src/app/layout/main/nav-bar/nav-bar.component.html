@@ -1,12 +1,12 @@
 <div class="m-header">
-  <a href="javascript:" class="mobile-menu" id="mobile-collapse" (click)="navCollapse()"><span></span></a>
+  <a href="javascript:" class="mobile-menu" id="mobile-collapse" (click)="toggleNavigationBar()"><span></span></a>
   <a [routerLink]="['/']" class="b-brand">
     <span class="f-20 text-white">{{ appName }}</span>
   </a>
-  <a class="mob-toggler" [ngClass]="{'on' : menuClass}" href="javascript:" (click)="menuClass = !menuClass"><i
+  <a class="mob-toggler" href="javascript:" (click)="toggleMobileHeaderBar()"><i
     class="feather icon-more-vertical"></i></a>
 </div>
-<div class="collapse navbar-collapse" [style.display]="menuClass ? 'block' : 'none'">
+<div class="collapse navbar-collapse" [style.display]="(layoutStates$ | async)?.mobileHeaderBarCollapsed ? 'none' : 'block'">
   <app-nav-left class="mr-auto"></app-nav-left>
   <app-nav-right class="ml-auto"></app-nav-right>
 </div>

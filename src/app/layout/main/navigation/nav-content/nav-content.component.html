@@ -1,4 +1,4 @@
-<perfect-scrollbar (clickOutside)="navMob()" [excludeBeforeClick]="true" [exclude]="'#mobile-collapse'" id="nav-ps-gradient-able" class="gradientscroll" [style.max-width]="'300px'" [usePSClass]="true" [disabled]="null">
+<perfect-scrollbar (clickOutside)="toggleMobileNavigationBar()" [excludeBeforeClick]="true" [exclude]="'#mobile-collapse'" id="nav-ps-gradient-able" class="gradientscroll" [style.max-width]="'300px'" [usePSClass]="true" [disabled]="null">
   <div class="navbar-content">
     <ul class="nav pcoded-inner-navbar">
       <ng-container *ngFor="let item of (navigationItems$ | async)">

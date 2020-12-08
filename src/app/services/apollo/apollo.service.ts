@@ -12,18 +12,17 @@ export abstract class ApolloService {
   protected async Query(query: DocumentNode, variables: any = null): Promise<any> {
     const queryOptions: any = {query: gql`${ query }`, ...variables && {variables}};
     return new Promise<any>((resolve: (data) => void, reject: (data) => void) => {
-      const sub: Subscription = this.apollo.watchQuery<any>(queryOptions)
+      const subscription: Subscription = this.apollo.watchQuery<any>(queryOptions)
         .valueChanges.subscribe(({data, errors}) => {
-          if (sub) {
-            sub.unsubscribe();
-          }
           if (errors) {
-            reject(errors);
+            reject(errors.map(error => error.message).join(', ')); // TODO: GRAPHQL ERRORS
           } else {
             resolve(data);
           }
-        }, (error: Error) => {
+        }, (error: Error) => { // TODO: NETWORK ERRORS
           reject(error.message);
+        }, () => {
+          subscription.unsubscribe();
         });
     });
   }
@@ -31,18 +30,17 @@ export abstract class ApolloService {
   protected async Mutation(mutation: DocumentNode, variables: any = null): Promise<any> {
     const mutationOptions: any = {mutation: gql`${ mutation }`, ...variables && {variables}};
     return new Promise<any>((resolve: (data) => void, reject: (data) => void) => {
-      const sub: Subscription = this.apollo.mutate(mutationOptions)
+      const subscription: Subscription = this.apollo.mutate(mutationOptions)
         .subscribe(({data, errors}) => {
-          if (sub) {
-            sub.unsubscribe();
-          }
           if (errors) {
-            reject(errors);
+            reject(errors.map(error => error.message).join(', ')); // TODO: GRAPHQL ERRORS
           } else {
             resolve(data);
           }
-        }, (error: Error) => {
+        }, (error: Error) => { // TODO: NETWORK ERRORS
           reject(error.message);
+        }, () => {
+          subscription.unsubscribe();
         });
     });
   }

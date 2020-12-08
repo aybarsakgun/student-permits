@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {User} from '../../../../interfaces/user.interface';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -29,7 +29,9 @@ import {UserService} from '../../../../services/user/user.service';
     </app-alert>
     <div class="float-right">
       <button type="button" class="btn btn-secondary" mat-dialog-close [disabled]="isSaving">Close</button>
-      <button type="button" class="btn btn-primary ml-1" (click)="save()" [disabled]="isSaving"><span class="spinner-border spinner-border-sm" *ngIf="isSaving"></span>Save changes</button>
+      <button type="button" class="btn btn-primary ml-1" (click)="save()" [disabled]="isSaving"><span
+        class="spinner-border spinner-border-sm" *ngIf="isSaving"></span>Save changes
+      </button>
     </div>
   `
 })
@@ -37,6 +39,7 @@ export class UserEditDialogComponent {
   public userForm: FormGroup;
   public isSaving: boolean;
   public errorMessage: string;
+
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,

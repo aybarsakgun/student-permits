@@ -39,9 +39,11 @@ export class ClassComponent implements OnInit {
         user
       }
     }).afterClosed().pipe(take(1)).subscribe((data: User) => {
-      const findStudent = this.class.students.findIndex(student => student.id === data.id);
-      if (findStudent !== -1) {
-        this.class.students[findStudent] = data;
+      if (data) {
+        const findStudent = this.class.students.findIndex(student => student.id === data.id);
+        if (findStudent !== -1) {
+          this.class.students[findStudent] = data;
+        }
       }
     });
   }

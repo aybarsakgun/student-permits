@@ -1,9 +1,10 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component} from '@angular/core';
 import {Store} from '@ngrx/store';
 import * as fromRoot from '../../../../ngrx';
 import {Observable} from 'rxjs';
 import {NavigationItem} from '../navigation';
-import {map} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
+import * as _layoutActions from '../../../../ngrx/actions/layout.actions';
 
 @Component({
   selector: 'app-nav-content',
@@ -16,16 +17,16 @@ export class NavContentComponent {
     map((config) => config && config.navigationItems)
   );
 
-  @Output() onNavMobCollapse = new EventEmitter();
-
   constructor(
     private store: Store<fromRoot.State>
   ) {
   }
 
-  navMob(): void {
-    if (document.querySelector('app-navigation.pcoded-navbar').classList.contains('mob-open')) {
-      this.onNavMobCollapse.emit();
-    }
+  toggleMobileNavigationBar(): void {
+    this.store.select(fromRoot.getLayout).pipe(take(1)).subscribe((data) => {
+      if (data.mobileNavigationBarCollapsed) {
+        this.store.dispatch(new _layoutActions.MobileNavigationBarToggle());
+      }
+    });
   }
 }

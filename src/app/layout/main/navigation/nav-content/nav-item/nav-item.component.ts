@@ -1,5 +1,9 @@
 import {Component, Input} from '@angular/core';
 import {NavigationItem} from '../../navigation';
+import {Store} from '@ngrx/store';
+import * as fromRoot from '../../../../../ngrx';
+import {take} from 'rxjs/operators';
+import * as _layoutActions from '../../../../../ngrx/actions/layout.actions';
 
 @Component({
   selector: 'app-nav-item',
@@ -9,7 +13,9 @@ import {NavigationItem} from '../../navigation';
 export class NavItemComponent {
   @Input() item: NavigationItem;
 
-  constructor() {
+  constructor(
+    private store: Store<fromRoot.State>
+  ) {
   }
 
   closeOtherMenu(event): void {
@@ -34,8 +40,10 @@ export class NavItemComponent {
         lastParent.classList.add('active');
       }
     }
-    if ((document.querySelector('app-navigation.pcoded-navbar').classList.contains('mob-open'))) {
-      document.querySelector('app-navigation.pcoded-navbar').classList.remove('mob-open');
-    }
+    this.store.select(fromRoot.getLayout).pipe(take(1)).subscribe((data) => {
+      if (data.mobileNavigationBarCollapsed) {
+        this.store.dispatch(new _layoutActions.MobileNavigationBarToggle());
+      }
+    });
   }
 }
